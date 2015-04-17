@@ -1,0 +1,17 @@
+{
+	"noticias":[
+			{% for noticia in noticias %}
+				{
+					"categoria": "{{noticia.categoria}}",
+					"empresa_id": "{{empresa}}",
+					"id": "{{noticia.id}}",
+					"titulo": "{{noticia.titulo.strip | removetags:'p b span strong br h1 h2 h3 h4 h5 h6'|safe}}",
+					"chamada": "{{noticia.chamada}}",
+					"data_da_noticia": "{{noticia.data_da_noticia|date:'d.m.Y'}}",
+					"lida": "{% if noticia.id in leituras %}{{ STATIC_URL }}img/interna/lida_check.png{% else %}{{ STATIC_URL }}img/interna/naolida_check.png{% endif %}",
+					"total_pages_paginator": "{{total_pages_paginator}}",
+					"url_noticia": "{% url 'noticia' noticia.categoria.slug noticia.id noticia.slug %}"
+				}{% if not forloop.last %},{% endif %}
+			{% endfor %}
+	]
+}

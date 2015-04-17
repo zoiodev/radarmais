@@ -1,0 +1,102 @@
+		<!-- ESQUECI MINHA SENHA -->
+		<div id="esqueciSenha" class="reveal-modal esqueci-senha" data-reveal>
+			<input type="hidden" name="url_email" id="url_email" value="{% url 'email' %}">
+			<h2 class="logo">
+				<img src="{{ STATIC_URL }}img/home/rmais_logo.png">
+			</h2>
+			
+			<div class="row">
+				<div class="small-12 medium-10 small-centered columns">
+					<p class="lead italic">Esqueci minha senha</p>
+					<hr>
+					<p>Informe abaixo seu e-mail de cadastro</p>
+					<form class="form-busca" name="esqueciMinhaSenha" >
+						{% csrf_token %}
+						<!-- FORM PARA MEDIUM E LARGE -->
+						<div class="row collapse hide-for-small desktop">
+							<div class="small-9 columns">
+								{{formSenha.email}}
+							</div>
+
+							<div class="small-3 columns">
+								<input type="button" name="enviar" value="enviar" class="button enviar-email">
+							</div>
+						</div>
+						<!-- / FORM PARA MEDIUM E LARGE -->
+
+						<!-- FORM PARA SMALL -->
+						<div class="row collapse show-for-small-only">
+							<div class="small-12 columns mobile">
+								{{formSenha.email}}
+							</div>
+
+							<div class="small-12 columns">
+								<input type="button" name="enviar" value="enviar" class="button enviar-email expand">
+							</div>
+						</div>
+						<!-- / FORM PARA MEDIUM E LARGE -->
+						<hr>
+
+						<input type="hidden" name="url_email" id="url_email" value="{% url 'email' %}">
+						<input type="hidden" name="email_token" id="email_token" value="{{csrf_token}}">
+
+					</form>
+					<small>Ainda não possui cadastro? <br><a href="/saiba-como"> Clique aqui e saiba como ter acesso ao Radar +</a></small>
+				</div>
+			</div>
+			
+			<a class="close-reveal-modal">&#215;</a>
+		</div>
+		<!-- / ESQUECI MINHA SENHA -->
+
+
+
+		<!-- ENVIADA COM SUCESSO -->
+		<a href="javascript:void(0)" class="enviada-com-sucesso" data-reveal-id="enviada-com-sucesso"></a>
+		<div id="enviada-com-sucesso" class="reveal-modal esqueci-senha" data-reveal>
+			<h2 class="logo">
+				<img src="{{STATIC_URL}}img/home/rmais_logo.png">
+			</h2>
+			
+			<div class="row">
+				<div class="small-12 medium-10 small-centered columns">
+					<p class="lead italic success">Senha enviada com sucesso!</p>
+					<hr>
+					<p>Em alguns instantes você receberá um e-mail contendo as informações de usuário e senha do Radar+.</p>
+					<br>
+					<small>
+						Verifique em sua caixa anti-span ou indesejáveis.<br>
+						<a href="javascript: void(0);" data-reveal-id="esqueciSenha"> Clique aqui para reenviar sua solicitação de nova senha.</a>
+					</small>
+				</div>
+			</div>
+			
+			<a class="close-reveal-modal">&#215;</a>
+		</div>
+		<!-- / ENVIADA COM SUCESSO -->
+
+
+
+
+		<!-- USUÁRIO INEXISTENTE -->
+		<a href="javascript:void(0)" class="usuario-inexistente" data-reveal-id="usuario-inexistente"></a>
+		<div id="usuario-inexistente" class="reveal-modal esqueci-senha" data-reveal>
+			<h2 class="logo">
+				<img src="{{STATIC_URL}}img/home/rmais_logo.png">
+			</h2>
+			
+			<div class="row">
+				<div class="small-12 medium-10 small-centered columns">
+					<p class="lead italic error">E-mail não existe!</p>
+					<hr>
+					<p>Usuário inexistente, verifique seu E-mail.</p>
+					<br>
+					<small>
+						<a href="javascript: void(0);" data-reveal-id="esqueciSenha"> Clique aqui para realizar uma nova tentativa.</a>
+					</small>
+				</div>
+			</div>
+			
+			<a class="close-reveal-modal">&#215;</a>
+		</div>
+		<!-- / USUÁRIO INEXISTENTE -->

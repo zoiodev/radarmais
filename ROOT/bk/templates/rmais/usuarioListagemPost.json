@@ -1,0 +1,16 @@
+{
+	"usuarios":[
+			{% for usuario in resultBusca %}
+				{
+					"id": "{{usuario.id}}",
+					"nome_do_usuario": "{{usuario.nome_do_usuario}}",
+					"email": "{{usuario.email}}",
+					"cliente": "{{usuario.empresa}}",
+					"url": "{{urlEdit}}{{usuario.id}}",
+					"del": "{{urlDel}}{{usuario.id}}",
+					"tipo": "{{usuario.empresa.get_tipo_de_usuario_display}}"
+				}{% if not forloop.last %},{% endif %}
+			{% endfor %}
+			
+	]
+}

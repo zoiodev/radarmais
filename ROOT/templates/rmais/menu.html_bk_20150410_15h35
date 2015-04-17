@@ -1,0 +1,117 @@
+
+<section class="top-bar-section">
+    <ul class="right">
+        <li>
+            <a href="#" class="second-color abrir-busca">
+                <img src="{{ STATIC_URL }}img/home/search_btn.png"><span class="show-for-small">Busca</span>
+            </a>
+        </li>
+
+        <!-- TABLET E DESKTOP -->
+        <li class="has-dropdown hide-for-small">
+            <a href="#" class="btn-menu">
+                <img src="{{ STATIC_URL }}img/home/menu_btn.png">
+            </a>
+            <ul class="dropdown">
+                {% for item in menu %}
+                    <li class="active">
+                        <a href="{% url 'pagina' item.slug %}">
+                            {{item.titulo}}
+                        </a>
+                    </li> 
+                {% endfor %}
+
+                {% if request.session.tipo_usuario == 1 %}
+                    <li class="has-dropdown">
+                        <a href="javascript:void(0);" class="btn-menu menu-admin" >
+                            Administrativo
+                        </a>
+                        <ul class="dropdown">
+                            <li class="active">
+                                <a href="{% url 'noticiaListagem' %}">
+                                    Notícias
+                                </a>
+                            </li>
+                            <li class="active">
+                                <a href="{% url 'usuarioListagem' %}">
+                                    Usuários
+                                </a>
+                            </li>
+                             <li class="active">
+                                <a href="{% url 'clientesListagem' %}">
+                                    Clientes
+                                </a>
+                            </li>
+
+                        </ul>
+                    </li>
+                {%  endif%}
+
+
+
+
+                <li class="active">
+                    <a href="{% url 'configuracoes' %}">
+                        Configurações
+                    </a>
+                </li>
+
+                <li class="active">
+                    <a href="{% url 'logout' %}">
+                        Logout
+                    </a>
+                </li>
+            </ul>
+        </li>
+        <!-- / TABLET E DESKTOP -->
+
+
+
+
+        <!-- MOBILE -->
+        {% for item in menu %}
+            <li class="link-menu show-for-small-only">
+                <a href="{% url 'pagina' item.slug %}">{{item.titulo}}</a>
+            </li>
+        {% endfor %}
+        {% if request.session.tipo_usuario == 1 %}
+            <li class="has-dropdown show-for-small-only">
+                <a href="javascript:void(0);" class="btn-menu menu-admin" >
+                    Administrativo
+                </a>
+                <ul class="dropdown">
+                    <li class="active">
+                        <a href="{% url 'usuarioListagem' %}">
+                            Usuários
+                        </a>
+                    </li>
+                    <li class="active">
+                        <a href="{% url 'noticiaListagem' %}">
+                            Notícias
+                        </a>
+                    </li>
+                    <li class="active">
+                        <a href="{% url 'clientesListagem' %}">
+                            Clientes
+                        </a>
+                    </li>
+
+
+                </ul>
+            </li>
+        {% endif %}
+        <li class="link-menu show-for-small-only">
+            <a href="{% url 'configuracoes' %}">
+                Configurações
+            </a>
+        </li>
+
+        <li class="link-menu show-for-small-only">
+            <a href="{% url 'logout' %}">
+                Logout
+            </a>
+        </li>
+        <!-- / MOBILE -->
+
+    </ul>
+</section>

@@ -1,0 +1,115 @@
+{% extends "rmais/base.html" %}
+	
+{% block title %} {{noticia.titulo}} {% endblock %}
+
+
+
+
+{% block banner %}/{{categoria.banner}}{% endblock %}
+
+{% block img_categoria %}
+	<div class="icone-categoria-home" style="background-image:url(/{{categoria.logo}})"></div>
+{% endblock %}
+
+{% block categoria %}
+	<h2>{{categoria.nome_da_categoria}}</h2>
+{% endblock %}
+
+
+{% block css %}
+	<link rel="stylesheet" href="{{STATIC_URL}}bower_components/medium-editor-insert-plugin/dist/css/medium-editor-insert-plugin.css">
+{% endblock %}
+
+{% block scriptsrc %}
+{% endblock %}
+
+
+	{% block content %}
+
+		<!-- CONTENT DA NOTÍCIA -->
+		<div class="small-12 gomo noticia noticias">
+
+
+
+			<!--
+			VOLTAR
+			-->
+			<div class="small-12 columns text-right">
+				<a href="{% url 'listagem' categoria.slug %}">
+					&larr; voltar
+				</a>
+			</div>
+
+
+
+			<!-- DATA GERAL -->
+			<div class="small-12 noticia-header">
+				<div class="large-2 medium-3 small-12 columns cabecalho">
+					<p class="data-padrao first-color">{% if not noticia.data_da_noticia %}{{noticia.data_de_publicacao|date:"j.m.Y"}}{% else %}{{noticia.data_da_noticia|date:"j.m.Y"}}{% endif %}</p>
+				</div>
+				<div class="large-10 medium-9 hide-for-small columns cabecalho"></div>
+
+
+				<div class="small-12 titulo columns">
+					<h2>{{noticia.titulo | safe}}</h2>
+				</div>
+			</div>
+			<!-- / DATA GERAL -->
+
+
+
+
+
+
+			<!-- NOTÍCIA -->
+			<div class="small-12 columns noticia-completa">
+
+				<!-- CHAMADA -->
+				{% if noticia.chamada|removetags:"p b span strong br" %}
+					<p class="chamada">
+						{{noticia.chamada|removetags:"p b span strong br" | safe }} 
+					</p>
+				{% endif %}
+				<!-- / CHAMADA -->
+
+
+				<!-- TEXTO CORRIDO -->
+				{% if noticia.imagem_principal %}
+					<p>
+						<img src="/{{ URL }}{{noticia.imagem_principal}}">
+					</p>
+				{% endif %}
+
+				<div>
+					{{noticia.texto | safe }}
+				</div>
+				<!-- /TEXTO CORRIDO -->
+
+
+				{% if noticia.fonte %}
+					<p class="fonte">{{noticia.fonte | removetags:"b span strong" |safe}}</p><hr>
+				{% endif %}
+
+			</div>
+			<!-- / NOTÍCIA -->
+
+
+
+			<!-- SEPARACAO -->
+			<div class="row separador"></div>
+			<!-- / SEPARACAO -->
+			<!--
+			VOLTAR
+			-->
+			<div class="small-12 columns">
+				<a href="{% url 'listagem' categoria.slug %}">
+					&larr; voltar
+				</a>
+			</div>
+			
+
+		</div>
+		<!-- / CONTENT DA NOTÍCIA -->
+
+
+	{% endblock %}

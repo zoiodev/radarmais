@@ -1,0 +1,73 @@
+<html>
+	<header>
+		<style type="text/css">
+			body {
+				font-family: Helvetica, Roboto, Arial, sans-serif;
+				color: #4A4A4A;
+				line-height: 1.5;
+				font-size: 16px;
+			}
+			td {
+				font-family: Helvetica, Roboto, Arial, sans-serif;
+				font-size: 16px;
+			}
+			a {
+				color: #252969;
+				text-decoration: none;
+				line-height: inherit;
+			}
+		</style>
+	</header>
+	<body background="http://radarmais.com.br/static/img/login/tile.png">
+
+		<table width="100%" cellpadding="5" cellspacing="5" border="0">
+			<tr>
+				<td valign="top" align="center">
+					
+					<table cellpadding="0" cellspacing="0" border="0">
+						<tr>
+							<td height="200" align="center">
+								<a href="http://radarmais.com.br/">
+									<img src="http://radarmais.com.br/static/img/login/radarmais_logo_email2.png" border="0">
+								</a>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								Olá, {{ nome }}!
+								<br><br>
+								Você está recebendo este e-mail pois solicitou o envio dos seus dados de acesso ao sistema Radar+.
+								<br><br>
+								Seus dados de acesso no Radar+ são estes: <br>
+								Login: <strong>{{ login }}</strong><br>
+								Senha: <strong>{{ senha }}</strong><br><br>
+
+								<a href="http://radarmais.com.br/">
+									<strong>Clique aqui para acessar o Radar+</strong>
+								</a>
+								<br><br><br><br><br><br>
+							</td>
+						</tr>
+					</table>
+
+				</td>
+			</tr>
+			<tr>
+				<td bgcolor="#252969" valign="middle" align="center" height="130">
+					<br>
+					
+					<a href="http://zoio.net.br/">
+						<img src="http://radarmais.com.br/static/img/login/zoio_logo.png" border="0">
+					</a>
+					&nbsp;&nbsp;&nbsp;&nbsp;
+					<a href="http://grupomaquina.com/">
+						<img src="http://radarmais.com.br/static/img/login/maquina_logo.png" border="0">
+					</a>
+					
+					<br>
+				</td>
+			</tr>
+		</table>
+
+	</body>
+</html>

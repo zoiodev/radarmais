@@ -1,0 +1,18 @@
+{% load date_add %}
+{
+	"usuarios":[
+			{% for usuario in resultBusca %}
+				{
+					"id": "{{usuario.id}}",
+					"empresa_id": "{{usuario.empresa.id}}",
+					"nome_do_usuario": "{{usuario.nome_do_usuario}}",
+					"email": "{{usuario.email}}",
+					"cliente": "{{usuario.empresa}}",
+					"url": "{{urlEdit}}{{usuario.id}}",
+					"del": "{{urlDel}}{{usuario.id}}",
+					"tipo": "{{ usuario.empresa.get_tipo_de_usuario_display }}{% if usuario.empresa.tipo_de_usuario == 0 %}{% if usuario.status == 2 %}{{ usuario.get_status_display }}<br>Válido até: <strong>{{ usuario.data_criacao|qtde_de_dias:usuario.dias_liberado|date:"d.m.Y" }}</strong>{% elif usuario.status == 1 %}Ilimitado{% else %}Inativo{% endif %}{% endif %}"
+				}{% if not forloop.last %},{% endif %}
+			{% endfor %}
+			
+	]
+}

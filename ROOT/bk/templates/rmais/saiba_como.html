@@ -1,0 +1,38 @@
+{% extends "rmais/base.html" %}
+	
+<!-- {% block banner %}/{{pagina.banner}}{% endblock %} -->
+
+{% block title %}Saíba Como{% endblock %}
+
+{% block content %}
+	
+
+
+
+			<div class="small-12 columns noticia-completa">
+
+				<!-- CHAMADA -->
+				<p class="chamada">
+					{{pagina.chamada}}
+				</p>
+				<!-- / CHAMADA -->
+
+
+
+				<!-- TEXTO CORRIDO -->
+				<p>
+					<img src="/{{ pagina.imagem_txt }}">
+				</p>
+				<p>
+					{{pagina.texto}}
+				</p>
+
+				
+				<!-- /TEXTO CORRIDO -->
+
+
+				<!-- <p class="fonte">Fonte: Zóio</p><hr> -->
+
+
+			</div>
+{% endblock %}

@@ -1,0 +1,180 @@
+{% extends "rmais/base-admin.html" %}
+{% load widget_tweaks %}
+
+{###################################################
+### deixar o block e a url da imagem na mesma linha
+### para não gerar espaço e dar erro no link da img 
+### block top >>>
+####################################################
+##}
+{% block title %}Novos Usuários{% endblock %}
+
+{% block banner %}{{ STATIC_URL }}uploads/pagina/banner/banner_home_C3eauxI.png{% endblock %}
+
+{% block iconeSessao %}{{ STATIC_URL }}uploads/categoria/radar_icon.png{% endblock %}
+{% block categoriaSessao %}Usuários{% endblock %}
+
+{###################################################
+### <<< block top 
+####################################################
+##}
+
+
+{% block css %}
+	<link rel="stylesheet" href="{{ STATIC_URL }}css/admin.css" />
+{% endblock %}
+
+
+{% block scriptsrc %}
+	<script src="{{ STATIC_URL }}js/admin_usuario.js"></script>
+{% endblock %}
+
+
+
+{% block script %}
+<script>
+	function formController($scope, $http) {
+		$scope.completing = false;
+
+		$scope.submitUrl = function(btnClick) {
+			if ($scope.addUsuario.$valid) {
+				var locationAction = $('#url_add').val();
+
+				$http({
+					method: 'POST',
+					url: locationAction,
+					headers: { 'Content-Type' : 'application/x-www-form-urlencoded', 'X-CSRFToken': '{{ csrf_token }}'},
+
+					data: $.param($scope.formData)
+				}).
+				success(function(data) {
+
+					if(btnClick == 1){
+						// Coloca o autocomplemento
+						$scope.completing = true;
+						
+						$scope.retornos = data.usuario;
+						$('#addUsuario')[0].reset();
+					}else{
+						window.location = $('#url_list').val();
+					}
+				})
+				.
+				error(function(data) {
+					// Se deu algum erro, mostro no log do console
+					$scope.completing = false;
+					console.log("Ocorreu um erro no banco de dados ao trazer auto-ajuda da home");
+				});	
+            }
+		}
+	}
+</script>
+{% endblock %}
+
+
+
+
+
+{% block content %}
+
+<style type="text/css">
+	.has-error {
+		border-color: red;
+	}
+</style>
+
+
+<div ng-controller="formController">
+	 	<p class="left">
+			<a href="{% url 'usuarioListagem' %}" class="button secondary alert tiny radius">&larr; Cancelar e voltar para a listagem.</a>
+		</p>
+	<div class="row">
+
+		<form method="post" class="adicionar-usuario" id="addUsuario" name="addUsuario" ng-submit="submitUrl()">
+			{% csrf_token %}
+			<div class="small-12 columns">
+				<div class="small-2 columns">
+					<label for="right-label" class="right inline">Nome</label>
+				</div>
+				<div class="small-10 columns">
+					{{ form.nome_do_usuario|attr:"ng-model:formData.nome_do_usuario"|attr:"required"|attr:"ng-class:{ 'has-error' : addUsuario.nome_do_usuario.$invalid && !addUsuario.nome_do_usuario.$pristine }" }}
+					<p ng-show="addUsuario.nome_do_usuario.$invalid && !addUsuario.nome_do_usuario.$pristine" class="help-block">You name is required.</p>
+				</div>
+			</div>
+			
+			<div class="small-12 columns">
+				<div class="small-2 columns">
+					<label for="right-label" class="right inline">E-mail</label>
+				</div>
+				<div class="small-10 columns">
+					{{ form.email|attr:"ng-model:formData.email"|attr:"required"|attr:"type:email" }}
+				</div>
+			</div>
+
+			<div class="small-12 columns">
+				<div class="small-2 columns">
+					<label for="right-label" class="right inline">Nome do Cliente</label>
+				</div>
+				<div class="small-10 columns">
+					{{ form.empresa|attr:"ng-model:formData.empresa"|attr:"required" }}
+				</div>
+			</div>
+			<div class="small-6 columns">
+				<div class="small-4 columns">
+					<label for="right-label" class="right inline">Status</label>
+				</div>
+				<div class="small-8 columns">
+					{{ form.status|attr:"ng-model:formData.status" }}
+				</div>
+			</div>
+			<div class="small-6 columns">
+				<div class="small-4 columns">
+					<label for="right-label" class="right inline">Qtde. Dias</label>
+				</div>
+				<div class="small-8 columns">
+					{{ form.dias_liberado|attr:"ng-model:formData.dias_liberado" }}
+				</div>
+			</div>
+
+			<div class="small-6 small-centered columns">
+				<div class="small-12 columns text-center">
+					<a href="javscript: void(0);" class="button radius cadastroUsuario" ng-click="submitUrl(1)" id="1">SALVAR E CRIAR NOVO USUARIO</a>
+					<a href="javscript: void(0);" class="cadastroUsuario button radius" ng-click="submitUrl(2)" id="2">SALVAR</a>
+				</div>
+			</div>
+			<input type="hidden" name="url_add" id="url_add" value="{% url 'usuarioAddPost' %}">
+			<input type="hidden" name="url_list" id="url_list" value="{% url 'usuarioListagem' %}">
+		</form>
+	</div>
+
+
+		<!-- SEPARADOR -->
+		<div class="row separador"></div>
+		<!-- / SEPARADOR -->
+
+	<div class="row" ng-show="completing">
+		<div class="usuario-criado medium-12 columns text-center">USUARIO CRIADO COM SUCESSO</div>
+	</div>
+
+	<div class="row" ng-show="completing">
+		<div class="small-10 small-centered columns add-usuario panel" style="background-color: transparent;" ng-repeat="retorno in retornos">
+			<p>Nome: {[{retorno.nome_do_usuario}]}</p>
+			<p>E-mail: {[{retorno.email}]}</p>
+			<p>Senha: {[{retorno.senha}]}</p>
+			<p>Cliente: {[{retorno.empresa}]}</p>
+			<p>Acesse: <a href="javascript: void(0);" target="blank">www.radarmais.com.br</a> para ter acesso ao conteúdo.</p>
+		</div>
+	</div>
+
+	<div class="row" ng-show="completing">
+		<div class="medium-6 medium-centered columns">
+			<div class="medium-12 columns text-center">
+				<a href="javscript: void(0);" class="button radius ">ENVIAR POR EMAIL</a>
+				
+			</div>
+		</div>
+	</div>
+</div>
+
+{% endblock %}
+

@@ -1,0 +1,100 @@
+{% extends "rmais/base-login.html" %}
+	
+	{% block title %}Login{% endblock %}
+
+	{% block scriptsrc %}
+	<script src="{{ STATIC_URL }}js/admin.js"></script>
+	{% endblock %}
+
+
+
+
+	{% block content %}
+		<div class="row login separador">
+			<div class="small-12 medium-5 large-4 columns small-centered">
+				
+				<!-- LOGO -->
+				<div class="small-12 columns text-center logo">
+					<img src="{{ STATIC_URL }}img/login/radarmais_logo.png">
+				</div>
+				<!-- /LOGO -->
+
+
+				<!-- FORM LOGIN -->
+				<div class="small-12 text-center formulario">
+					<h2>Login</h2>
+					<hr>
+
+					<form class="login" name="login" id="login"  method="post">
+						{% csrf_token %}
+						<div class="row collapse">
+							<!-- usuário -->
+							<div class="small-2 columns text-left">
+								<img src="{{ STATIC_URL }}img/login/usuario_icon.png">
+							</div>
+							<div class="small-10 columns">
+								{{form.usuario}}
+							</div>
+							<!-- / usuário -->
+
+							<!-- senha -->
+							<div class="small-2 columns text-left">
+								<img src="{{ STATIC_URL }}img/login/senha_icon.png">
+							</div>
+							<div class="small-10 columns">
+								{{form.senha}}
+							</div>
+							<!-- / senha -->
+							<input type="submit" name="submit" value="acessar" class="button radius expand">
+						</div>
+					</form>
+
+					<hr>
+					<a href="javascript:void(0)" class="esqueci-senha" data-reveal-id="esqueciSenha">
+						esqueci minha senha
+					</a>
+				</div>
+				<!-- / FORM LOGIN -->
+
+
+			</div>
+		</div>
+
+
+		
+		<!-- SEPARACAO -->
+		<div class="row separador"></div>
+		<!-- / SEPARACAO -->
+	{% endblock %}
+
+
+
+
+	 {% block script %}
+	 	{% if logError == 'log-error' %}
+			<script type="text/javascript">
+		 	 	$(document).ready(function(){
+		 	 		printarAlertaAdmin('Usuário inexistente.', 'alert', $('#login'))
+	            });
+		 	</script>
+		{% elif logError == 'log-passInvalid' %}
+	 	 	<script type="text/javascript">
+		 	 	$(document).ready(function(){
+		 	 		printarAlertaAdmin('Senha Inválida.', 'alert', $('#login'))
+	            });
+		 	</script>
+		{% elif logError == 'log-inativo' %}
+	 	 	<script type="text/javascript">
+		 	 	$(document).ready(function(){
+		 	 		printarAlertaAdmin('Usuário Inativo.', 'alert', $('#login'))
+	            });
+		 	</script>
+		{% elif logError == 'log-expirou' %}
+		 	<script type="text/javascript">
+		 	 	$(document).ready(function(){
+		 	 		printarAlertaAdmin('Seu tempo de acesso esgotou.', 'alert', $('#login'))
+		 	 		// printarAlertaAdmin('Usuário expirou em {{data_expiracao|date:"d/m/Y"}}.', 'alert', $('#login'))
+	            });
+		 	</script>
+		{% endif %}
+	 {% endblock %}

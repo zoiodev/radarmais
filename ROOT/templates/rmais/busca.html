@@ -1,0 +1,28 @@
+
+	<div id="busca" class="reveal-modal full fixed" data-reveal ng-controller="BuscaCtrl" style=" overflow: auto; position: fixed;">
+		<h2 class="logo">
+			<a href="#" class="fechar-busca"> 
+				<img src="{{STATIC_URL}}img/home/rmais_logo.png">
+			</a>
+		</h2>
+		
+		<div class="row">
+			<div class="small-12 medium-10 small-centered columns">
+				<p class="lead italic">Faça uma busca pelo conteúdo:</p>
+
+				<form class="form-busca">
+					<input type="text" name="busca" id="campoBusca" placeholder="Digite o assunto de interesse" ng-keyup="pesquisar(search, '{{ csrf_token }}')" ng-model="search" autocomplete="off">
+					<input id="token" name="token" type="hidden" value="{{ csrf_token }}" ng-model="token">
+
+				</form>
+			</div>
+			<div class="small-12 medium-10 small-centered columns" ng-show="completing">
+				<a class="link" href="{[{ retorno.url }]}"  ng-repeat="retorno in retornos">
+			     	<h3 ng-bind-html="retorno.titulo"></h3>
+			     	<p ng-bind-html="retorno.chamada"></p>
+			     </a>
+			</div>
+		</div>
+		
+		<a class="close-reveal-modal">&#215;</a>
+	</div>

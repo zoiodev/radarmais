@@ -1,0 +1,187 @@
+{% extends "rmais/base-admin.html" %}
+
+
+{###################################################
+### deixar o block e a url da imagem na mesma linha
+### para não gerar espaço e dar erro no link da img 
+### block top >>>
+####################################################
+##}
+{% block title %}Lista de  Usuários{% endblock %}
+
+{% block banner %}{{ STATIC_URL }}uploads/pagina/banner/banner_home_C3eauxI.png{% endblock %}
+
+{% block iconeSessao %}{{ STATIC_URL }}uploads/categoria/radar_icon.png{% endblock %}
+{% block categoriaSessao %}Usuários{% endblock %}
+
+{###################################################
+### <<< block top 
+####################################################
+##}
+
+
+
+
+{% block css %}
+	<link rel="stylesheet" href="{{ STATIC_URL }}css/admin.css" />
+{% endblock %}
+
+{% block scriptsrc %}
+	<script src="{{ STATIC_URL }}js/admin_usuario.js"></script>
+{% endblock %}
+
+
+
+
+{% block script %}
+<script>
+	function formController($scope, $http) {
+		$scope.completing = false;
+
+		$scope.submitUrl = function() {
+			var localUrl = "{% url 'usuarioListagemPost' %}";
+
+			$scope.formData.url = "{% url 'usuarioEditForm' 0 %}";
+			$scope.formData.del = "{% url 'usuarioDelete' 0 %}";
+
+			$http({
+				method: 'POST',
+				url: localUrl,
+				headers: { 'Content-Type' : 'application/x-www-form-urlencoded', 'X-CSRFToken': '{{ csrf_token }}'},
+
+				data: $.param($scope.formData)
+			}).
+			success(function(data) {
+				// Coloca o autocomplemento
+				$scope.completing = true;
+				// console.log("chegou aqui: ");
+
+				// JSON retornado do banco
+				$scope.retornos = data.usuarios;
+				
+			})
+			.
+			error(function(data) {
+				// Se deu algum erro, mostro no log do console
+				$scope.completing = false;
+				console.log(data);
+				console.log("Ocorreu um erro no banco de dados ao trazer auto-ajuda da home");
+			});	
+		}
+	}
+</script>
+{% endblock %}
+
+
+
+{% block content %}
+	<div class="row" ng-controller="formController">
+		<div class="small-12 no-padding-lr">
+			<div class="small-2 columns no-padding-lr">
+				<a href="{% url 'usuarioAddForm' %}" class="button uppercase radius paddingless expand criar-novo">criar novo</a>
+			</div>
+
+			<div class="small-10 columns no-padding-r">
+
+
+				<!-- BUSCA USUÁRIO -->
+				<form id="usuarioBusca" name="usuarioBusca" ng-submit="submitUrl()" >
+					{% csrf_token %}
+					<input type="hidden" name="url" id="url" ng-model="formData.url" value="{% url 'usuarioEditForm' 0 %}">
+
+					<input type="hidden" name="del" id="del" ng-model="formData.del" value="{% url 'usuarioEditForm' 0 %}">
+
+					filtrar:
+					<hr class="marginless">
+
+					<div class="small-4 columns no-padding-l">
+						{{formFiltro.empresaFilter}}
+					</div>
+					<div class="small-5 columns no-padding-lr">
+						<input type="text" name="campobusca" id="campobusca" placeholder="palavra chave" ng-model="formData.campobusca">
+					</div>
+					<div class="small-3 columns no-padding-r">
+						<a href="javascript:void(0)" class="button radius paddingless tiny expand" ng-click="submitUrl()">buscar</a>
+					</div>
+				</form>
+				<!-- / BUSCA USUÁRIO -->
+
+
+			</div>
+		</div>
+		<div class="small-12">
+			<table class="small-12">
+				<thead>
+					<tr>
+						{% for header in headers %}
+							<th>
+								{% if header.sortable %}<a href="{{ header.url }}" class="filterHeader" rel="{{ header.url }}">{% endif %}
+									{{header.text}} 
+								{% if header.sortable %}</a>{% endif %}
+							</th>
+						{% endfor %}
+						<th>Ação</th>
+					</tr>
+				</thead>
+				<tbody ng-hide="completing">
+					{% for usuario in usuarios %}
+						<tr id="usuario_{{usuario.id}}">
+							<td class="text-center bold">{{usuario.id}}</td>
+							<td>{{usuario.nome_do_usuario}}</td>
+							<td>{{usuario.email}}</td>
+							<td>{{usuario.empresa}}</td>
+							<td>{{ usuario.empresa.get_tipo_de_usuario_display }}</td>
+							<!-- <td>{{ usuario.empresa.get_tipo_de_usuario_display }}</td> -->
+							<td id="{{usuario.id}}">
+								<a href="{% url 'usuarioEditForm' usuario.id %}">
+									<div class="bt-acao edit"></div>
+								</a>
+								<a href="javascript: void(0);" id="deleteUsuario" rel="{% url 'usuarioDelete' usuario.id %}" >
+									<div class="bt-acao delete"></div>
+								</a>
+							</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+
+				<tbody ng-show="completing">
+					<tr id="usuario_{[{ retorno.id }]}" ng-repeat="retorno in retornos">
+						<td class="text-center bold">{[{ retorno.id }]}</td>
+						<td>{[{ retorno.nome_do_usuario }]}</td>
+						<td>{[{ retorno.email }]}</td>
+						<td>{[{ retorno.cliente }]}</td>
+						<td>{[{ retorno.tipo }]}</td>
+						<td id="{[{ retorno.id }]}">
+							<a href="{[{ retorno.url }]}">
+								<div class="bt-acao edit"></div>
+							</a>
+							<a href="javascript: void(0);" id="deleteUsuario"  rel="{% url 'usuarioDelete' 1 %}">
+								<div class="bt-acao delete"></div>
+							</a>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+
+		<ul class="pagination" ng-hide="completing">
+
+			{% for i in usuarios.paginator.page_range %}
+				{% ifequal i usuarios.number %}
+					<li class="current"><a href="javascript:void(0);">{{ i }}</a></li>
+
+				{% else %}
+					<li><a href="{{current_url}}?page={{i}}{{url_pagination_params}}">{{ i }}</a></li>
+					<!-- <li><a href="{{current_url}}?page={{i}}">{{ i }}</a></li> -->
+
+				{% endifequal %}
+			{% endfor %}
+
+		</ul>
+	</div>
+</div> 
+
+
+{% endblock %}
+
+

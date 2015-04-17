@@ -1,0 +1,46 @@
+{% extends "rmais/base.html" %}
+	
+{% block title %}Saíba Como{% endblock %}
+
+{% block banner %}/{{pagina.banner}}{% endblock %}
+
+{% block img_categoria %}
+	<div class="icone-categoria-home" style="background-image:url(/{{pagina.logo}})"></div>
+{% endblock %}
+
+{% block categoria %}
+	<h2>{{pagina.titulo}}</h2>
+{% endblock %}
+
+
+
+
+{% block content %}
+	<div class="small-12 columns noticia-completa">
+
+		<!-- CHAMADA -->
+		<p class="chamada">
+			{{pagina.chamada}}
+		</p>
+		<!-- / CHAMADA -->
+
+
+
+		<!-- TEXTO CORRIDO -->
+		{% if pagina.imagem_txt %}
+			<p>
+				<img src="/{{ pagina.imagem_txt }}">
+			</p>
+		{% endif %}
+		<p>
+			{{pagina.texto}}
+		</p>
+		
+		<!-- /TEXTO CORRIDO -->
+
+
+	</div>
+
+	
+
+{% endblock %}

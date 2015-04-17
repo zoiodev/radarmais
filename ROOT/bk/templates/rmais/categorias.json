@@ -1,0 +1,13 @@
+{
+	"categorias":[
+		{% for categoria in listCategorias %}
+		{
+			"id": {{categoria.id}},
+			"nome": "{{categoria.nome_da_categoria}}",
+			"logo": "{{categoria.logo}}",
+			"bg": "{{categoria.banner}}",
+			"slug": "{{categoria.slug}}"
+		}{% if not forloop.last %},{% endif %}
+		{% endfor %}
+	]
+}

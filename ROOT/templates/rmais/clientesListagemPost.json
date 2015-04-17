@@ -1,0 +1,18 @@
+{
+	"clientes":[
+			{% for empresa in resultBusca %}
+				{
+					"id": "{{empresa.id}}",
+					"nome_da_empresa": "{{empresa.nome_da_empresa}}",
+					"nome_do_contato": "{{empresa.nome_do_contato}}",
+					"email_do_contato": "{{empresa.email_do_contato}}",
+					"ativo": "{{empresa.ativo}}",
+					"tipo_de_usuario": "{{empresa.get_tipo_de_usuario_display}}",
+					"tipo_de_usuario_int": "{{empresa.tipo_de_usuario}}",
+					"url": "{{fieldCampoUrlEdit}}{{empresa.id}}",
+					"del": "{{fieldCampoUrlDelete}}{{empresa.id}}"
+				}{% if not forloop.last %},{% endif %}
+			{% endfor %}
+			
+	]
+}

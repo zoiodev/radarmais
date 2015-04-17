@@ -1,0 +1,158 @@
+{% extends "rmais/base-admin.html" %}
+{% load widget_tweaks %}
+
+{###################################################
+### deixar o block e a url da imagem na mesma linha
+### para não gerar espaço e dar erro no link da img 
+### block top >>>
+####################################################
+##}
+{% block title %}Configurações{% endblock %}
+
+{% block banner %}{{ STATIC_URL }}uploads/pagina/banner/banner_home_C3eauxI.png{% endblock %}
+
+{% block iconeSessao %}{{ STATIC_URL }}img/admin/icon_config.png{% endblock %}
+{% block categoriaSessao %}Configurações{% endblock %}
+
+{###################################################
+### <<< block top 
+####################################################
+##}
+
+{% block css %}
+	<link rel="stylesheet" href="{{ STATIC_URL }}css/admin.css" />
+{% endblock %}
+
+
+
+
+{% block script %}
+<script src="{{ STATIC_URL }}js/loader.js"></script>
+<script>
+	$(document).ready(function(){
+		$('.button-save-config .save-new-senha').click(function(){
+			var localAction = $('#url_config_edit').val();
+			var token = $('#token').val();
+			var redirect = $('#url_redirect').val();
+
+			// >>> autoloader
+			var btn = $('a.save-new-senha');
+			loader_esqueci_minha_senha(btn);
+			// <<< autoloader
+
+
+			$.ajax({
+				type: 'POST',
+				url: localAction,
+				headers: { 'Content-Type' : 'application/x-www-form-urlencoded', 'X-CSRFToken': token},
+				data: $( "form#reset-password" ).serialize(),
+				// SUCESSO
+				success: function(data){
+
+					if(data == 'senha-error'){
+						alert('Senha Atual Incorreta!');
+						remove_loader_submit(btn);
+					}
+					// valida qtd caracter
+					if(data == 'min-caracter_senha'){
+						alert('Favor, utilizar no minimo 3 digitos para a senha.');
+						remove_loader_submit(btn);
+					}
+					if(data == 'true'){
+						window.location = redirect;
+						alert('Senha alterada com sucesso.');
+					}else{
+						remove_loader_submit(btn);
+					}
+
+				},
+				//ERRO
+				error: function (data) {
+					// Se deu algum erro, mostro no log do console
+					console.log(data);
+					console.log('deu erro');
+				}
+			});
+		});
+	});
+</script>
+{% endblock %}
+
+
+
+{% block content %}
+	<div class="medium-12 columns top-header-config">
+		<div class="large-2 medium-3 small-5 columns cabecalho">
+		 	<h5>TROCAR SENHA</h5>
+		</div>
+		<div class="large-10 medium-9 small-7 columns cabecalho">
+			<h5>&nbsp;</h5>
+		</div>
+	</div>
+	
+	<div class="medium-10 medium-centered columns">
+		<form method="post" class="reset-password" id="reset-password" name="reset-password" data-abide>
+			{% csrf_token %}
+			<div class="large-8 medium-10 columns">
+				<div class="small-12 columns">
+					<div class="small-4 columns">
+						<label for="right-label" class="right inline">Senha atual</label>
+					</div>
+					<div class="small-8 columns">
+						<input type="password" name="senha_atual" id="senha_atual">
+					</div>
+				</div>
+
+				<div class="small-12 columns password-field">
+					<div class="small-4 columns">
+				    	<label for="right-label" class="right inline">Nova Senha</label>
+				    </div>
+			    	<div class="small-8 columns">
+						<input type="password" name="senha_nova" id="senha_nova" required pattern="[a-zA-Z]+" maxlength="10">
+				    	<small class="error">Your password must match the requirements</small>
+				    </div>
+			  	</div>
+			  	<div class="small-12 columns password-confirmation-field">
+			  		<div class="small-4 columns">
+			   			<label for="right-label" class="right inline">Confirme a senha</label>
+			   		</div>
+			   		<div class="small-8 columns">
+			      		<input type="password" required pattern="[a-zA-Z]+" data-equalto="senha_nova">
+			    		<small class="error">The password did not match</small>
+			      	</div>
+			 	</div>
+			</div>
+			<div class="large-4 medium-2 columns">
+					<div class="small-12 columns text-center button-save-config">
+						<a href="javscript: void(0);" class="save-new-senha button radius">
+							<span>SALVAR</span>
+						</a>
+					</div>
+			</div>
+
+
+
+			<input type="hidden" name="url_config_edit" id="url_config_edit" value="{% url 'configuracoesPost' %}">
+			<input type="hidden" name="token" id="token" value="{{csrf_token}}">
+			<input type="hidden" name="url_redirect" id="url_redirect" value="{% url 'home' %}">
+
+		</form>
+	</div>
+
+	<div class="footer-config">
+		<div class="medium-12 columns">
+			<div class="large-2 medium-3 small-5 columns cabecalho">
+			 	<h5>&nbsp;</h5>
+			</div>
+			<div class="large-10 medium-9 small-7 columns cabecalho">
+				<h5>&nbsp;</h5>
+			</div>
+		</div>
+	</div>
+	</div>
+
+
+
+
+
+{% endblock %}

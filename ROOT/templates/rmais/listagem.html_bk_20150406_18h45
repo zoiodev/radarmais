@@ -1,0 +1,109 @@
+{% extends "rmais/base.html" %}
+
+{% block title %}Lista de Notícias{% endblock %}
+
+
+
+
+
+
+{% block banner %}/{{categoria.banner}}{% endblock %}
+
+
+
+
+{% block img_categoria %}
+
+	<div class="icone-categoria-home" style="background-image:url(/{{categoria.logo}})"></div>
+{% endblock %}
+
+
+{% block categoria %}
+	<h2>{{categoria.nome_da_categoria}}</h2>
+{% endblock %}
+	
+
+
+{% block script %}
+	<script type="text/javascript">
+		$(document).ready(function(){     
+			
+		});
+			
+	</script>
+{% endblock %}
+
+
+	{% block content %}
+		<!-- CHAMADA DA CATEGORIA -->
+		<div class="small-12">
+			<input type="hidden" id="url_pagination_infinity" name="url_pagination_infinity" value="" >
+			{% for noticia in noticias %}
+				   
+
+				   {{noticia.empresa_set.first}}
+				
+				{% ifchanged %}
+
+		</div>
+					<div class="gomo div">
+					<!-- DATA GERAL -->
+					<div class="small-12 text-center">
+						<p class="data-padrao first-color">{{noticia.data_da_noticia|date:"j.m.Y"}}</p>
+						
+					</div>
+					<!-- / DATA GERAL -->
+
+
+				{% endifchanged %}
+					
+
+
+				<!-- NOTÍCIA -->
+				<div class="small-12 columns noticias-landingpage noticias {% if forloop.last %}end{% endif %}" data-equalizer>
+					<!-- LIDO / NÃO LIDO -->
+					<div class="small-2 medium-1 columns text-center lido-naolido" data-equalizer-watch>
+						
+
+						<a href="{% url 'noticia' noticia.categoria.slug noticia.id noticia.slug %}">
+						
+							<span class="helper"></span>
+							{% if noticia.id in leituras %}
+								<img src="{{ STATIC_URL }}img/interna/lida_check.png">
+							{% else %}
+								<img src="{{ STATIC_URL }}img/interna/naolida_check.png">
+							{% endif %}
+							
+						</a>
+
+						<hr>
+					</div>
+					<!-- / ICONE DA CATEGORIA -->
+
+
+					<!-- TÍTULO E CHAMADA -->
+					<div class="small-10 medium-11 columns" data-equalizer-watch>
+
+						<h3 class="home">
+							<a href="{% url 'noticia' noticia.categoria.slug noticia.id noticia.slug %}"> {{noticia.titulo|removetags:"p b span strong br h1 h2 h3 h4 h5" | safe }}</a>
+						</h3>
+						{% if noticia.chamada|removetags:"p b span strong br"|safe %}
+							<p class="title-home italic">
+								<a href="{% url 'noticia' noticia.categoria.slug noticia.id noticia.slug %}">
+									{{noticia.chamada | removetags:"p b span strong br"|safe }} 
+								</a>
+							</p>
+						{% endif %}
+						<hr>
+					</div>
+					<!-- / TÍTULO E CHAMADA -->
+				</div>
+				<!-- / NOTÍCIA -->
+			{% endfor %}
+
+			
+		</div>
+		<!-- / CHAMADA DA CATEGORIA -->
+
+			
+	{% endblock %}

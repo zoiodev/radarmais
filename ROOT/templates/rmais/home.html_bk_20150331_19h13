@@ -1,0 +1,153 @@
+{% extends "rmais/base.html" %}
+{% load operacoes %}
+
+
+
+{% block title %}Home{% endblock %}
+
+{% block banner %}
+    /{{pagina.banner}}
+{% endblock %}
+
+{% block logo %}
+    <div class="small-12 columns text-center">
+        
+        <!-- LOGO DO WEBAPP -->
+        <img src="/{{pagina.logo}}">
+        <!-- / LOGO DO WEBAPP -->
+
+    </div>
+    
+{% endblock %}
+
+
+
+    {% block content %}
+       
+        <!-- SEPARACAO -->
+        <div class="row separador">
+            <hr class="small-1 columns small-centered">
+        </div>
+        <!-- / SEPARACAO -->
+
+        {% if categorias %}
+             {% for categoria in categorias %}
+
+                <!--  {{ categoria|primeira_noticia:"titulo" }}<hr> -->
+
+            {% endfor %}
+
+
+            {% for categoria in categorias %}
+
+                <!-- CHAMADA DA CATEGORIA -->
+                <div class="small-12 gomo">
+
+                    <!-- ICONE DA CATEGORIA -->
+                    <div class="small-3 medium-2 columns">
+                        {%  if total_lidas_por_categoria %}
+                            {% for total in total_lidas_por_categoria %}
+                                {% ifequal total|safeseq|first|floatformat categoria.id|floatformat %}
+
+                                    {% with total_de_noticias_da_categoria=categoria.noticia_set.count|floatformat total_de_noticias_lidas_da_categoria=total|safeseq|last|floatformat  %}
+
+                                        {% with total_nao_lidas=total_de_noticias_da_categoria|subtract:total_de_noticias_lidas_da_categoria %}
+
+                                            {% if total_nao_lidas > 0 %}
+                                                <a href="{% url 'listagem' categoria.slug %}">
+                                                    <small class="contagem-nao-lidas-home">{{ total_nao_lidas }}</small>
+                                                </a>
+                                            {% endif %}
+
+                                        {% endwith %}
+
+                                    {% endwith %}
+                                {%  endifequal %}
+                            {% endfor %}
+                        {%  endif %}
+                        <a href="{% url 'listagem' categoria.slug %}">
+                            <div class="icone-categoria-home" style="background-image:url(/{{categoria.logo}})"></div>
+                        </a>
+                    </div>
+                    <!-- / ICONE DA CATEGORIA -->
+
+
+                    <!-- CONTEÚDO DA CATEGORIA -->
+                    <div class="small-9 medium-10 columns">
+                        
+                        <div class="medium-8 large-10 columns">
+                            <h2 class="home">
+                                <a href="{% url 'listagem' categoria.slug %}"> 
+                                    {{ categoria.nome_da_categoria }}
+                                </a> 
+                                <small class="data-padrao">
+                                    <!-- {{categoria.noticia_set.first.data_de_publicacao|date:"d.m.Y"}} -->
+                                    {{ categoria|primeira_noticia:"data_de_publicacao"|date:"d.m.Y" }}
+                                </small>
+                            </h2>
+                            <hr class="home">
+                        </div>
+
+                        <div class="medium-4 large-2 columns status-{{categoria.noticia_set.first.status}}">
+
+                            {% if categoria.noticia_set.first.get_status_display %}
+                                <p class="hide-for-small">
+                                    <a href="{% url 'noticia' categoria.slug categoria.noticia_set.first.id categoria.noticia_set.first.slug %}">
+                                        <i class="icon-circle"></i> {{categoria.noticia_set.first.get_status_display}}
+                                    </a>
+                                </p>
+
+
+                                <p class="show-for-small-only">
+                                    <a href="{% url 'noticia' categoria.slug categoria.noticia_set.first.id categoria.noticia_set.first.slug %}">
+                                        <i class="icon-circle"></i> {{categoria.noticia_set.first.get_status_display}}
+                                    </a>
+                                </p>
+                            {% else %}
+
+                                <p>
+                                    &nbsp;
+                                </p>
+
+                            {% endif %}
+                            <hr class="home hide-for-small">
+                        </div>
+
+
+
+                        <div class="small-12 columns">
+                            <p class="title-home italic">
+                                <a href="{% url 'noticia' categoria.slug categoria.noticia_set.first.id categoria|primeira_noticia:'slug' %}">
+                                    <!-- {{categoria.noticia_set.first.titulo|removetags:"p b span strong br h1 h2 h3 h4 h5" | safe}} -->
+                                    {{ categoria|primeira_noticia:"titulo"|removetags:"p b span strong br h1 h2 h3 h4 h5" | safe }}
+                                </a>
+                            </p>
+                        </div>
+                        
+                    </div>
+                    <!-- / CONTEÚDO DA CATEGORIA -->
+
+                    <div class="small-12 columns separador">
+                        <div class="ver-todos">
+                            <div class="link">
+                                <a href="{% url 'listagem' categoria.slug %}">
+                                    ver todos
+                                    <!-- <i class="icon-plus-circle"></i> -->
+                                    <img src="{{ STATIC_URL }}img/home/vertodos_btn.png">
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- / CHAMADA DA CATEGORIA -->
+            {% endfor %}
+        
+        {% else %}
+            <p>Não há categorias Cadastradas.</p>
+        {% endif %}
+
+    {% endblock %}
+
+
+
+

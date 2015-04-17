@@ -1,0 +1,285 @@
+{% extends "rmais/base-noticia-add_edit.html" %}
+{% load widget_tweaks %}
+	
+{% block title %}Adicionar Notícia{% endblock %}
+
+
+{% block scriptsrc %}
+	<!-- 
+	EDITOR SEM UPLOAD DE IMAGEM
+	<script src="{{ STATIC_URL }}js/medium-editor.js"></script>
+	-->
+
+	<script src="{{STATIC_URL}}bower_components/medium-editor/dist/js/medium-editor.js"></script>
+	<script src="{{STATIC_URL}}bower_components/handlebars/handlebars.runtime.min.js"></script>
+	<script src="{{STATIC_URL}}bower_components/jquery-sortable/source/js/jquery-sortable-min.js"></script>
+	<!-- Unfortunately, jQuery File Upload Plugin has a few more dependencies itself -->
+	<script src="{{STATIC_URL}}bower_components/blueimp-file-upload/js/vendor/jquery.ui.widget.js"></script>
+	<script src="{{STATIC_URL}}bower_components/blueimp-file-upload/js/jquery.iframe-transport.js"></script>
+	<script src="{{STATIC_URL}}bower_components/blueimp-file-upload/js/jquery.fileupload.js"></script>
+	<!-- The plugin itself -->
+	<script src="{{STATIC_URL}}bower_components/medium-editor-insert-plugin/dist/js/medium-editor-insert-plugin.js"></script>
+
+
+
+	<script src="{{ STATIC_URL }}js/vendor/jquery.datetimepicker.js"></script>
+	<script src="{{ STATIC_URL }}js/vendor/jquery.limit-1.2.source.js"></script>
+	<script src="{{ STATIC_URL }}js/admin_noticia_add_edit.js"></script>
+
+	<script src="{{ STATIC_URL }}js/admin-categorias.js"></script>
+	<script src="{{STATIC_URL}}js/loader.js"></script>
+{% endblock %}
+
+
+{% block css %} 
+	<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/jquery.datetimepicker.css" />
+	<!-- 
+	EDITOR SEM UPLOAD DE IMAGEM
+	<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
+	<link rel="stylesheet" href="{{STATIC_URL}}css/medium-editor.css">
+	<link rel="stylesheet" href="{{STATIC_URL}}css/themes/default.css"> 
+	-->
+
+
+	<link rel="stylesheet" href="{{STATIC_URL}}bower_components/medium-editor/dist/css/medium-editor.min.css">
+	<link rel="stylesheet" href="{{STATIC_URL}}bower_components/medium-editor/dist/css/themes/default.css" id="medium-editor-theme">
+	<!-- Font Awesome for awesome icons. You can redefine icons used in a plugin configuration -->
+	<link href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+	<!-- The plugin itself -->
+	<link rel="stylesheet" href="{{STATIC_URL}}bower_components/medium-editor-insert-plugin/dist/css/medium-editor-insert-plugin.min.css">
+{% endblock %}
+
+
+
+{% block banner %}
+	<div class="bg-home bg-sessao" style="background-image:url(/{[{ categoriaBg }]})">
+		<div class="row">
+			<div class="small-12">
+
+				<!-- LOGO DO WEBAPP -->
+
+			</div>
+		</div>
+	</div>
+{% endblock %}
+
+
+{% block iconeSessao %}
+	<div class="row logo-sessao">
+		<div class="hide" data-form-input="categoria" ng-init="categoriabanco={{noticia.categoria_id}}">{[{ categoriaId }]}</div>
+
+		<div class="large-2 medium-2 small-4 columns small-centered text-center">
+			<div class="icone-categoria-home" style="background-image:url(/{[{ categoriaLogo }]})"></div>
+		</div>
+
+		<div class="small-10 columns small-centered clear-left text-center">
+			<button id="nomeDaCategoria" data-dropdown="categorias" aria-controls="categorias" aria-expanded="false" class="button dropdown h2">
+				{[{ categoriaNome }]}
+			</button>
+		</div>
+
+
+
+		<div class="small-12">
+			<p class="left">
+				<a href="{% url 'noticiaListagem' %}" class="button secondary alert tiny radius">&larr; Cancelar e voltar para a listagem.</a>
+			</p>
+			<p class="right help">
+				<a href="javascript:void(0);" id="infoForm">
+					<span>Como funciona?</span> <i class="icon-info-circled"></i>
+				</a>
+			</p>
+		</div>
+
+
+		<ul id="categorias" data-dropdown-content class="f-dropdown" aria-hidden="true" tabindex="-1">
+			<li ng-repeat="retorno in retornos">
+				<a href="javascript:void(0)" ng-click="ativarCategoria(retorno.id)">{[{ retorno.nome }]} </a>
+			</li>
+		</ul>
+
+	</div>
+{% endblock %}
+
+
+
+
+{% block orientacaoNoticia %}
+	<!-- ORIENTAÇÃO -->
+		{% include 'rmais/orientacaoNoticia.html' %}
+	<!-- / ORIENTAÇÃO -->
+{% endblock %}
+
+
+
+{% block content %}
+
+
+
+	<!-- CONTENT DA NOTÍCIA -->
+	<div class="small-12 gomo noticia">
+
+
+
+		<!-- DATA GERAL E TÍTULO -->
+		<div class="small-12 noticia-header">
+			<div class="large-2 medium-3 small-12 columns cabecalho">
+				<p class="data-padrao first-color" id="dataDeCadastro"><span class="editableNoReturn datetimepickerNoTime" data-form-input="data_da_noticia">{{ noticia.data_da_noticia|date:"d.m.Y"}}</span></p>
+			</div>
+			<div class="large-10 medium-9 hide-for-small columns cabecalho"></div>
+
+
+			<div class="small-12 titulo columns">
+				<h2 class="editableNoReturn" id="tituloDaMateria" data-form-input="titulo" data-placeholder="Espaço para o título">{{ noticia.titulo|removetags:"p b span strong br h1 h2 h3 h4 h5 h6"|safe }}</h2>
+			</div>
+		</div>
+		<!-- / DATA GERAL -->
+
+
+		<div class="" id="testeLimit"></div>
+
+
+
+		<!-- NOTÍCIA -->
+		<div class="small-12 columns noticia-completa">
+
+			<!-- CHAMADA -->
+			<p class="chamada editableNoReturn" id="chamadaDaMateria" data-form-input="chamada" data-placeholder="Espaço para o lead">{{ noticia.chamada|removetags:"p b span strong br h1 h2 h3 h4 h5 h6"|safe  }}</p>
+			<!-- / CHAMADA -->
+
+
+			<div class="editable" id="textoDaMateria" data-form-input="texto" data-placeholder="Espaço para o texto">{{ noticia.texto | safe }}</div>
+			<div class="hide" id="espacoParaLimpeza"></div>
+
+
+			<p class="fonte editableNoReturn" id="fonteDaMateria" data-form-input="fonte" data-placeholder="Fonte: ">{{ noticia.fonte | safe }}</p>
+			<hr>
+
+
+		</div>
+		<!-- / NOTÍCIA -->
+
+		<!-- SEPARACAO -->
+		<div class="row separador"></div>
+		<!-- / SEPARACAO -->
+
+
+
+
+		<!-- CONTROLE -->
+		<div class="row">
+
+			<div class="small-12 columns panel configuracoes" id="acoesParaSalvar" data-equalizer>
+				<h6>Configurações finais:</h6>
+
+				<form id="formnoticia" name="formnoticia" method="post" onsubmit="return false;">
+					<input id="token" name="token" type="hidden" value="{{ csrf_token }}">
+					<input id="destino" name="destino" type="hidden" value="">
+					<input id="acao" name="acao" type="hidden" value="edit">
+					<input id="pk" name="pk" type="hidden" value="{{noticia.id}}">
+					
+					{{form.categoria}}
+					{{form.data_da_noticia}}
+					{{form.titulo}}
+					{{form.chamada}}
+					{{form.texto}}
+					{{form.fonte}}
+					{{form.data_de_publicacao|attr:"class:"|attr:"type:hidden"}}
+					{{form.slug|attr:"id:slug"|attr:"type:hidden"}}
+				
+					<input id="clientearray" name="clientearray" type="hidden" value="">
+
+					<hr>
+					<div class="small-5 columns li-nowarp" data-equalizer-watch>
+						<div class="small-6 columns no-padding-lr">
+							<p class="title">
+								Clientes
+							</p>
+						</div>
+						<div class="small-6 columns text-right">
+							<input id="todos" type="checkbox"><label for="todos">Todos</label>
+						</div>
+
+						<ul class="small-block-grid-1 medium-block-grid-2 clientes-list">
+							{% for empresa  in empresas%}
+								<li>
+
+									<input id="cliente{{empresa.id}}" name="cliente[]" value="{{empresa.id}}" type="checkbox" {% for ne in noticia.empresa.all %}{% if empresa.id = ne.id %}checked{% endif %}{% endfor %}>
+									<label for="cliente{{empresa.id}}">
+										{{empresa.nome_da_empresa}}
+									</label>
+
+								</li>
+							{% endfor %}
+						</ul>
+
+					</div>
+
+					<div class="small-3 columns separador" data-equalizer-watch>
+						<p class="title">Data para publicação</p>
+
+						<div class="row collapse postfix-round">
+							<div class="small-9 columns">
+								<input class="datetimepicker text-center radius" id="data_publicacao" name="data_publicacao" type="text" value="{{ noticia.data_de_publicacao|date:'d/m/Y H:i'}}">
+							</div>
+							<div class="small-3 columns">
+								<a href="javascript:void(0);" onclick="$('.datetimepicker').datetimepicker('show');" class="button postfix small radius">
+									<i class="icon-calendar"></i>
+								</a>
+							</div>
+							<p class="small">
+								Esta data serve para programar a publicação desta notícia no Radar+
+							</p>
+						</div>
+
+					</div>
+
+					<div class="small-4 columns separador" data-equalizer-watch>
+						<p class="title">Status</p>
+
+						<div class="small-6 columns no-padding-lr">
+							Publicado
+							<div class="switch round small">
+
+								<input {% if noticia.ativo %}checked="checked"{%  endif %} id="ativo" name="ativo" type="checkbox" value="False">
+								<label for="ativo"></label>
+
+							</div> 
+						</div>
+						<div class="small-6 columns">
+						<label>Status
+							{{form.status}}
+						</div>
+
+						<!-- SEPARACAO -->
+						<div class="row separador"></div>
+						<!-- / SEPARACAO -->
+
+						<hr>
+						<input type="submit" class="button expand small radius save" id="1" value="Salvar e voltar para listagem">
+						<input type="submit" class="button expand secondary tiny radius save" id="2" value="Salvar e criar outra">
+						<input type="submit" class="button expand secondary tiny radius save" id="3" value="Salvar e continuar editando">
+					</div>
+
+				</form>
+			</div>
+
+			<div class="small-12">
+				<a href="{% url 'noticiaListagem' %}" class="button secondary alert tiny radius">&larr; Cancelar edição e voltar para a listagem de notícias</a>
+			</div>
+		</div>
+		<!-- / CONTROLE -->
+
+
+
+
+
+		<!-- SEPARACAO -->
+		<div class="row separador"></div>
+		<!-- / SEPARACAO -->
+	</div>
+	<!-- / CONTENT DA NOTÍCIA -->
+
+
+
+{% endblock %}

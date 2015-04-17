@@ -1,0 +1,66 @@
+$( document ).ready(function() {
+    $( ".enviar-email" ).click(function() {
+    	var field = $('#email').val()
+    	var localAction = webroot+'esqueci-minha-senha'
+    	var elementoClicado = $(this);
+ 		
+		if (field == '') {
+			$('#email').focus();
+			return false;
+		}
+
+		loader_esqueci_minha_senha(elementoClicado);
+
+		$.ajax({
+			type: 'GET',
+			url: localAction,
+			data: 'email='+field,
+			// SUCESSO
+			success: function(data){
+				remove_loader_submit(elementoClicado);
+
+				if(data == 'true'){
+					$('a.enviada-com-sucesso').trigger('click');
+				}else{
+					$('a.usuario-inexistente').trigger('click');
+				}
+				
+			},
+			// ERRO
+			error: function (data) {
+				remove_loader_submit(elementoClicado);
+				// Se deu algum erro, mostro no log do console
+				console.log("Ocorreu um erro ao solicitar sua senha.");
+			}
+		});
+	});
+
+
+
+	if ($('.medium-insert-embeds-overlay')) {
+		$('.medium-insert-embeds-overlay').remove();
+	}
+
+});
+
+
+
+function footer() {
+	var footer = $(".rodape");
+	var pos = footer.position();
+	var height = $(window).height();
+	height = height - pos.top;
+	height = height - (footer.height()*2);
+	if (height > 0) {
+		footer.css({
+			'margin-top': (height) + 'px'
+		});
+	}
+}
+
+$(document).ready(function(){
+	footer();
+});
+$(window).resize(function(){
+	footer();
+});

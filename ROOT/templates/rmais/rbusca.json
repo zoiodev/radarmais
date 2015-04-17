@@ -1,0 +1,12 @@
+{% load strip_tag %}
+{
+	"noticias":[
+		{% for registro in resultBusca %}
+			{
+				"titulo": "{% spaceless %} {{ registro.titulo.strip | safe | removetags:'p b span strong br h1 h2 h3 h4 h5 h6 xml' }} {% endspaceless %}",
+				"chamada": "{% spaceless %} {{ registro.chamada.strip | safe | removetags:'p b span strong br h1 h2 h3 h4 h5 h6 xml' }} {% endspaceless %}",
+				"url": "{% url 'noticia' registro.categoria__slug registro.id registro.slug %}"
+			}{% if not forloop.last %},{% endif %}
+		{% endfor %}
+	]
+}

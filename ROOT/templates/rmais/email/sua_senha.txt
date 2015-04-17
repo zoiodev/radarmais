@@ -1,0 +1,20 @@
+Radar+
+
+Olá, {{ nome }}!
+
+Você está recebendo este e-mail pois solicitou o envio dos seus dados de acesso ao sistema Radar+.
+								
+Seus dados de acesso no Radar+ são estes:
+Login: {{ login }}
+Senha: {{ senha }}
+
+Acesse http://radarmais.com.br/
+
+
+
+Att.
+Radar+
+radarmais@grupomaquina.com.br
+
+Grupo Máquina PR
+Agência Zóio

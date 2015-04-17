@@ -1,0 +1,12 @@
+{
+	"usuario":[
+				{
+					"id": "{{localizarUser.id}}",
+					"nome_do_usuario": "{{localizarUser.nome_do_usuario}}",
+					"email": "{{localizarUser.email}}",
+					"senha": "{{localizarUser.senha}}",
+					"empresa": "{{localizarUser.empresa}}"
+				}
+			
+	]
+}

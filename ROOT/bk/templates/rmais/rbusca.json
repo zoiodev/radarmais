@@ -1,0 +1,12 @@
+
+{
+	"noticias":[
+		{% for registro in resultBusca %}
+			{
+				"titulo": "{{registro.titulo|removetags:'p b span strong br'|safe}}",
+				"chamada": "{{registro.chamada | removetags:"p b span strong br"|safe}}",
+				"url": "{% url 'noticia' registro.categoria.slug registro.slug %}"
+			}{% if not forloop.last %},{% endif %}
+		{% endfor %}
+	]
+}

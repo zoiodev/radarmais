@@ -1,0 +1,218 @@
+{% extends "rmais/base.html" %}
+
+{% block title %}Lista de Notícias{% endblock %}
+
+
+
+
+
+
+{% block banner %}/{{categoria.banner}}{% endblock %}
+
+
+
+
+{% block img_categoria %}
+
+	<div class="icone-categoria-home" style="background-image:url(/{{categoria.logo}})"></div>
+{% endblock %}
+
+
+{% block categoria %}
+	<h2>{{categoria.nome_da_categoria}}</h2>
+{% endblock %}
+	
+
+
+
+
+{% block script %}
+	<script type="text/javascript">
+		$(document).ready(function(){     
+			var page = 1;
+			var url = $('#url_pagination_infinity').val();
+			var res = url.replace("/1/", "/");
+			var urlPaginationInfinity = res;
+			var total_page_paginator = $('#total_page_paginator').val();
+
+
+			$(window).scroll(function () { 
+				if(page < total_page_paginator){
+					if(($(window).scrollTop() + $(window).height() + 1) >= $(document).height()) {
+						$(".gomo.div p.loading:last-child ").html('LOADING');
+						//Add something at the end of the page
+						page++;
+						localAction = urlPaginationInfinity+'2/';
+
+						$.get( localAction, function( data ) {
+							$(".gomo.div p.loading:last-child ").html('');
+							data = $.parseJSON(data);
+							noticiasArray = data.noticias;
+							var count = noticiasArray.length;
+							var i = 0;
+							
+							for(i==0; i<count; i++){
+								var noticia = data.noticias[i];
+								if(i > 0){
+									var iAnterior = i-1;
+									var noticiaAnterior = data.noticias[iAnterior];
+								  	var data_da_noticia_anterior = noticiaAnterior.data_da_noticia;	
+								}
+								var id = noticia.id;
+							  	var categoria = noticia.categoria;
+							  	var empresa_id = noticia.empresa_id;
+							  	var titulo = noticia.titulo;
+							  	var chamada = noticia.chamada;
+							  	var data_da_noticia = noticia.data_da_noticia;
+							  	var lida = noticia.lida;
+							  	var url_noticia = noticia.url_noticia;
+							  	
+
+								
+
+							  	tags = '';
+							  	if(i == count){
+							  		tags += '<div class="gomo div">';
+							  	}else{
+							  		tags += '<div class="gomo div">';
+							  	}
+							  		
+							  		if(data_da_noticia != data_da_noticia_anterior){
+							  			// >>> data
+								  		tags += '<div class="small-12 text-center">';
+								  			tags += '<p class="data-padrao first-color">'+data_da_noticia+'</p>';
+								  		tags += '</div>';
+								  		// <<< data
+							  			
+							  		}
+
+							  		// >>> noticias
+							  		tags += '<div class="small-12 columns noticias-landingpage noticias " data-equalizer="">';
+							  			// >>> leitura
+							  			tags += '<div class="small-2 medium-1 columns text-center lido-naolido" data-equalizer-watch="" style="height: 86px;">';
+							  				tags += '<a href="'+url_noticia+'">';
+							  					tags += '<span class="helper"></span>';
+							  					tags += '<img src="'+lida+'">';
+							  					tags += '<hr>';
+							  				tags += '</a>';
+							  			tags += '</div>';
+							  			// <<< leitura
+
+							  			// >>> titulo e chamada
+							  			tags += '<div class="small-10 medium-11 columns" data-equalizer-watch="" style="height: auto;">';
+							  				tags += '<h3 class="home">';
+							  					tags += '<a href="'+url_noticia+'">';
+							  						tags += titulo;
+							  					tags += '</a>';
+							  				tags += '</h3>';
+
+							  				tags += '<p class="title-home italic">';
+							  					tags += '<a href="'+url_noticia+'">';
+							  						tags += chamada;
+							  					tags += '</a>';
+							  				tags += '</p>';
+
+							  				tags += '<hr>';
+							  			tags += '</div>';
+							  			// <<< titulo e chamada
+							  		tags += '</div>';
+							  		// <<< noticias
+							  		tags += '<p class="small-12 columns text-center loading"></p>'
+							  	tags += '</div>';
+
+							  	
+							  	$(tags).insertAfter(".gomo.div:last-child");
+							  	// $( ".gomo.div.end" ).append( tags );
+
+							}
+							
+						});
+
+					}
+				}else{
+					return false;
+				}
+			});
+		});
+			
+	</script>
+{% endblock %}
+
+
+
+	{% block content %}
+		<!-- CHAMADA DA CATEGORIA -->
+		<div class="small-12">
+			<input type="hidden" id="url_pagination_infinity" name="url_pagination_infinity" value="{% url 'noticia_listagem_paginacao_infinita_json' categoria.slug 1 %}" >
+
+			<input type="hidden" id="total_page_paginator" name="total_page_paginator" value="{{total_pages_paginator}}">
+			{% for noticia in noticias %}
+				   
+
+				   {{noticia.empresa_set.first}}
+				
+				{% ifchanged %}
+
+		</div>
+					<div class="gomo div">
+					<!-- DATA GERAL -->
+					<div class="small-12 text-center">
+						<p class="data-padrao first-color">{{noticia.data_da_noticia|date:"j.m.Y"}}</p>
+						
+					</div>
+					<!-- / DATA GERAL -->
+
+
+				{% endifchanged %}
+					
+
+
+				<!-- NOTÍCIA -->
+				<div class="small-12 columns noticias-landingpage noticias {% if forloop.last %}end{% endif %}" data-equalizer>
+					<!-- LIDO / NÃO LIDO -->
+					<div class="small-2 medium-1 columns text-center lido-naolido" data-equalizer-watch>
+						
+
+						<a href="{% url 'noticia' noticia.categoria.slug noticia.id noticia.slug %}">
+						
+							<span class="helper"></span>
+							{% if noticia.id in leituras %}
+								<img src="{{ STATIC_URL }}img/interna/lida_check.png">
+							{% else %}
+								<img src="{{ STATIC_URL }}img/interna/naolida_check.png">
+							{% endif %}
+							
+						</a>
+
+						<hr>
+					</div>
+					<!-- / ICONE DA CATEGORIA -->
+
+
+					<!-- TÍTULO E CHAMADA -->
+					<div class="small-10 medium-11 columns" data-equalizer-watch>
+
+						<h3 class="home">
+							<a href="{% url 'noticia' noticia.categoria.slug noticia.id noticia.slug %}"> {{noticia.titulo|removetags:"p b span strong br h1 h2 h3 h4 h5" | safe }}</a>
+						</h3>
+						{% if noticia.chamada|removetags:"p b span strong br"|safe %}
+							<p class="title-home italic">
+								<a href="{% url 'noticia' noticia.categoria.slug noticia.id noticia.slug %}">
+									{{noticia.chamada | removetags:"p b span strong br"|safe }} 
+								</a>
+							</p>
+						{% endif %}
+						<hr>
+					</div>
+					<!-- / TÍTULO E CHAMADA -->
+				</div>
+				<!-- / NOTÍCIA -->
+				{% if forloop.last %}<p class="small-12 columns text-center loading"></p>{% endif %}
+			{% endfor %}
+
+			
+		</div>
+		<!-- / CHAMADA DA CATEGORIA -->
+
+			
+	{% endblock %}

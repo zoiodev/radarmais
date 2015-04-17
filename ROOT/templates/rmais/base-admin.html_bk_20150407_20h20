@@ -1,0 +1,229 @@
+<!doctype html>
+<!--[if IE 9]><html class="lt-ie10" lang="en" > <![endif]-->
+<html class="no-js" lang="en" data-useragent="Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.2; Trident/6.0)" ng-app="app">
+<!--  DIGAO: ===================================================================================================I                -->
+
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>RADAR+ | {% block title %}{% endblock %}</title>
+		
+		<meta name="description" content="" />
+		<meta name="author" content="" />
+		<meta name="copyright" content="Grupo Máquina. Copyright (c) 2015" />
+
+		<link rel="stylesheet" href="{{ STATIC_URL }}css/foundation.css" />
+		<link rel="stylesheet" href="{{ STATIC_URL }}css/main.css" />
+
+
+		<link rel="stylesheet" href="{{ STATIC_URL }}css/admin.css" />
+
+
+		{% block css %}{% endblock %}
+
+		
+		<link rel="stylesheet" href="{{ STATIC_URL }}css/cssfont/fontello.css" />
+		<script src="{{ STATIC_URL }}js/vendor/modernizr.js"></script>
+		<script type="text/javascript">
+            var webroot = "{% url 'home' %}";
+            var webrootBusca = "{% url 'rbusca' %}";
+        </script>
+	</head>
+
+	<body>
+
+
+		<link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,300,400' rel='stylesheet' type='text/css'>
+
+
+		<!-- HEADER -->
+		<div class="contain-to-grid sticky borda-menu">
+			<nav class="top-bar" data-topbar role="navigation">
+				<ul class="title-area">
+					<li class="name logo">
+						<h1>
+							<a href="{% url 'home' %}">
+								<!-- R+ -->
+								<img src="{{ STATIC_URL }}img/home/rmais_logo.png">
+							</a>
+						</h1>
+					</li>
+					<!-- Remove the class "menu-icon" to get rid of menu icon. Take out "Menu" to just have icon alone -->
+					<li class="toggle-topbar menu-icon">
+						<a href="#">
+							<span></span>
+						</a>
+					</li>
+				</ul>
+				
+				<!-- menu -->
+				{% include 'rmais/menu.html' %}
+				<!-- / menu -->
+			</nav>
+		</div>
+		<!-- / HEADER -->
+
+
+
+
+
+
+
+
+
+
+
+		<!-- BANNER -->
+		<div class="bg-home bg-sessao" style="background-image: url('{% block banner %}{% endblock %}')">
+		</div>
+		
+		<!-- /BANNER -->
+
+
+
+		<!-- ICONE DA SESSÃO -->
+		<div class="row logo-sessao">
+			<div class="large-2 medium-2 small-4 columns small-centered text-center">
+				
+				<div class="icone-categoria-home" style="background-image:url({% block iconeSessao %}{% endblock %})"></div>
+			</div>
+			<h2>{% block categoriaSessao %}{% endblock %}</h2>
+		</div>
+		
+		
+		<!-- / ICONE DA SESSÃO -->
+
+
+		<!-- SEPARACAO -->
+		<div class="row separador">
+			<hr class="small-1 columns small-centered">
+		</div>
+		<!-- / SEPARACAO -->
+
+
+
+
+
+
+
+
+
+
+
+		<!-- CONTEUDO -->
+		<div class="row">
+            {% block content %}{% endblock %}
+        </div>
+		<!-- / CONTEUDO -->
+
+
+
+
+		<!-- BUSCA -->
+		{% include 'rmais/busca.html' %}
+		<!-- / BUSCA -->
+
+
+
+
+
+
+		<!-- SEPARACAO -->
+		<div class="row separador"></div>
+		<!-- / SEPARACAO -->
+
+
+		<!-- RODAPE -->
+		<div class="rodape">
+			<div class="row">
+				<div class="small-12 columns">
+					
+					<div class="medium-6 columns text-left logos hide-for-small">
+						<a href="http://zoio.net.br">
+							<img src="{{ STATIC_URL }}img/login/zoio_logo.png">
+						</a>
+						<a href="http://grupomaquina.com">
+							<img src="{{ STATIC_URL }}img/login/maquina_logo.png">
+						</a>
+					</div>
+					<div class="medium-6 columns text-center logos show-for-small-only">
+						<a href="http://zoio.net.br">
+							<img src="{{ STATIC_URL }}img/login/zoio_logo.png">
+						</a>
+						<a href="http://grupomaquina.com">
+							<img src="{{ STATIC_URL }}img/login/maquina_logo.png">
+						</a>
+					</div>
+
+					<div class="medium-6 columns text-right infos hide-for-small">
+						<p>
+							<a href="mailto:radarmais@grupomaquina.com" class="mailto">radarmais@grupomaquina.com</a><br>
+							-<br>
+							<a href="http://zoio.net.br">zoio.net.br</a><br>
+							<a href="http://grupomaquina.com">grupomaquina.com</a>
+						</p>
+					</div>
+
+					<div class="medium-6 columns text-center infos show-for-small-only">
+						<p>
+							<a href="mailto:radarmais@grupomaquina.com" class="mailto">radarmais@grupomaquina.com</a><br>
+							-<br>
+							<a href="http://zoio.net.br">zoio.net.br</a><br>
+							<a href="http://grupomaquina.com">grupomaquina.com</a>
+						</p>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- / RODAPE -->
+		
+
+
+
+
+
+
+
+		<!-- ORIENTAÇÃO -->
+			{% include 'rmais/orientacaoNoticia.html' %}
+		<!-- / ORIENTAÇÃO -->
+		
+
+		<!-- ALERTAS -->
+			{% include 'rmais/alertas.html' %}
+		<!-- / ALERTAS -->
+
+
+		<script src="{{ STATIC_URL }}js/vendor/jquery.js"></script>
+		<script src="{{ STATIC_URL }}js/foundation.min.js"></script>
+		<script src="{{ STATIC_URL }}js/vendor/pace.min.js"></script>
+		<script src="{{ STATIC_URL }}js/vendor/jquery.cookie.js"></script>
+		<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.12/angular.min.js"></script>
+		<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.12/angular-sanitize.js"></script>
+		<script src="{{ STATIC_URL }}js/default.js"></script>
+		<script src="{{ STATIC_URL }}js/admin.js"></script>
+		<script src="{{ STATIC_URL }}js/admin_clientes.js"></script>
+		<script src="{{ STATIC_URL }}js/busca.js"></script>
+
+		{% block scriptsrc %}{% endblock %}
+		
+
+		<script>
+			$(document).foundation();
+
+			$('.abrir-busca').on('click', function() {
+				$('#busca').foundation('reveal','open');
+				setTimeout(function() { 
+					$('form.form-busca #campoBusca').focus();
+				}, 700);
+			});
+			$('.fechar-busca').on('click', function() {
+				$('#busca').foundation('reveal', 'close');
+			});
+			
+		</script>
+
+		{% block script %}{% endblock %}
+		
+	</body>
+</html>

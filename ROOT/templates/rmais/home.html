@@ -1,0 +1,138 @@
+{% extends "rmais/base.html" %}
+{% load operacoes %}
+
+
+
+{% block title %}Home{% endblock %}
+
+{% block banner %}
+    /{{pagina.banner}}
+{% endblock %}
+
+{% block logo %}
+    <div class="small-12 columns text-center">
+        
+        <!-- LOGO DO WEBAPP -->
+        <img src="/{{pagina.logo}}">
+        <!-- / LOGO DO WEBAPP -->
+
+    </div>
+    
+{% endblock %}
+
+
+
+    {% block content %} 
+
+        <!-- SEPARACAO -->
+        <div class="separador">
+            <hr class="small-1 columns small-centered">
+        </div>
+        <!-- / SEPARACAO -->
+
+        {% if categoriaNoticia %}
+             {% for categoria in categorias %}
+
+                <!--  {{ categoria|primeira_noticia:"titulo" }}<hr> -->
+
+            {% endfor %}
+
+
+            {% for categoria in categoriaNoticia %}
+                 
+                <!-- CHAMADA DA CATEGORIA -->
+                <div class="small-12 gomo home">
+
+
+                    <!-- ICONE DA CATEGORIA -->
+                    <div class="small-3 medium-2 columns">
+                        {% if categoria.total_nao_lidas != 0 %}        
+                            <a href="{% url 'listagem' categoria.categoria_slug %}">
+                                <small class="contagem-nao-lidas-home">{{ categoria.total_nao_lidas }}</small>
+                            </a>
+                        {% endif %}        
+                                           
+                        <a href="{% url 'listagem' categoria.categoria_slug %}">
+                            <div class="icone-categoria-home" style="background-image:url(/{{categoria.logo}})"></div>
+                        </a>
+                    </div>
+                    <!-- / ICONE DA CATEGORIA -->
+
+
+                    <!-- CONTEÚDO DA CATEGORIA -->
+                    <div class="small-9 medium-10 columns">
+                        
+                        <div class="medium-8 large-10 columns">
+                            <h2 class="home">
+                                <a href="{% url 'listagem' categoria.categoria_slug %}"> 
+                                    {{ categoria.nome_da_categoria }}
+                                </a> 
+                                <small class="data-padrao">
+                                    {{ categoria.data_da_noticia|date:"d.m.Y" }}
+                                </small>
+                            </h2>
+                            <hr class="home">
+                        </div>
+
+
+                        <div class="medium-4 large-2 columns status-{{categoria.status}} {% if categoria.status == 0 %} hide-for-small-only{% endif %}">
+
+                            {% if categoria.status %}
+                                <p class="hide-for-small">
+                                    <a href="{% url 'noticia' categoria.categoria_slug categoria.id categoria.noticia_slug %}">
+                                        <i class="icon-circle"></i> {{categoria.get_status_display}}
+                                    </a>
+                                </p>
+
+
+                                <p class="show-for-small-only">
+                                    <a href="{% url 'noticia' categoria.categoria_slug categoria.id categoria.noticia_slug %}">
+                                        <i class="icon-circle"></i> {{categoria.get_status_display}}
+                                    </a>
+                                </p>
+                            {% else %}
+
+                                <p>
+                                    &nbsp;
+                                </p>
+
+                            {% endif %}
+                            <hr class="home hide-for-small">
+                        </div>
+
+                        <div class="small-12 columns">
+                            <p class="title-home italic">
+                                <a href="{% url 'noticia' categoria.categoria_slug categoria.id  categoria.noticia_slug %}">
+                                    {{ categoria.titulo|removetags:"p b span strong br h1 h2 h3 h4 h5" | safe }}
+                                  
+                                </a>
+                            </p>
+                        </div>
+                        
+                    </div>
+                    <!-- / CONTEÚDO DA CATEGORIA -->
+
+                    <div class="small-12 columns separador">
+                        <div class="ver-todos">
+                            <div class="link">
+                                <a href="{% url 'listagem' categoria.categoria_slug %}">
+                                    ver todos
+                                    <!-- <i class="icon-plus-circle"></i> -->
+                                    <img src="{{ STATIC_URL }}img/home/vertodos_btn.png">
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- / CHAMADA DA CATEGORIA -->
+            {% endfor %}
+        
+        {% else %}
+            <p>Não há categorias Cadastradas.</p>
+        {% endif %}
+
+    {% endblock %}
+
+
+
+

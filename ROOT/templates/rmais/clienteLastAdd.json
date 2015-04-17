@@ -1,0 +1,13 @@
+{
+	"cliente":[
+				{
+					"id": "{{localizarUser.id}}",
+					"nome_da_empresa": "{{localizarUser.nome_da_empresa}}",
+					"endereco": "{{localizarUser.endereco}}",
+					"nome_do_contato": "{{localizarUser.nome_do_contato}}",
+					"email_do_contato": "{{localizarUser.email_do_contato}}",
+					"ativo": "{% if localizarUser.ativo == True %}SIM{% endif %}{% if localizarUser.ativo == False %}NAO{% endif %}",
+					"tipo_de_usuario": "{{localizarUser.get_tipo_de_usuario_display}}"
+				}
+	]
+}

@@ -1,0 +1,155 @@
+<!doctype html>
+<!--[if IE 9]><html class="lt-ie10" lang="en" > <![endif]-->
+<html class="no-js" lang="en" data-useragent="Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.2; Trident/6.0)">
+
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+        <title>RADAR+ | {% block title %}{% endblock %}</title>
+        
+        <!-- >>> homescreen -->
+        <link href="{{STATIC_URL}}img/homescreen/icones_152.png" rel="apple-touch-icon" />
+        <link href="{{STATIC_URL}}img/homescreen/icones_76.png" rel="apple-touch-icon" sizes="76x76" />
+        <link href="{{STATIC_URL}}img/homescreen/icones_120.png" rel="apple-touch-icon" sizes="120x120" />
+        <link href="{{STATIC_URL}}img/homescreen/icones_152.png" rel="apple-touch-icon" sizes="152x152" />
+        <link href="{{STATIC_URL}}img/homescreen/icones_180.png" rel="apple-touch-icon" sizes="180x180" />
+
+        <link href="{{STATIC_URL}}img/homescreen/icones_192.png" rel="icon" sizes="192x192" />
+        <link href="{{STATIC_URL}}img/homescreen/icones_128.png" rel="icon" sizes="128x128" />
+        <!-- <<< homescreen -->
+
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <meta name="copyright" content="Grupo Máquina. Copyright (c) 2015" />
+
+        <link rel="stylesheet" href="{{ STATIC_URL }}css/foundation.css" />
+        <link rel="stylesheet" href="{{ STATIC_URL }}css/main.css" />
+        <link rel="stylesheet" href="{{ STATIC_URL }}css/cssfont/fontello.css" />
+        <script src="{{ STATIC_URL }}js/vendor/modernizr.js"></script>
+
+        <script type="text/javascript">
+            var webroot = "{% url 'login' %}";
+            var webrootBusca = "{% url 'rbusca' %}";
+        </script>
+    </head>
+
+    <body class="bg-login  pace-done">
+        <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,300,400' rel='stylesheet' type='text/css'>
+
+
+            {% block content %}{% endblock %}
+        
+
+
+
+
+
+        <!-- RODAPE -->
+        <div class="rodape">
+            <div class="row">
+                <div class="small-12 columns">
+                    
+                    <div class="medium-6 columns text-left logos hide-for-small">
+                        <a href="http://zoio.net.br">
+                            <img src="{{ STATIC_URL }}img/login/zoio_logo.png">
+                        </a>
+                        <a href="http://grupomaquina.com">
+                            <img src="{{ STATIC_URL }}img/login/maquina_logo.png">
+                        </a>
+                    </div>
+                    <div class="small-7 columns text-center logos show-for-small-only small-centered">
+                        <div class="small-9 columns small-centered">
+                            <a href="http://zoio.net.br">
+                                <img src="{{ STATIC_URL }}img/login/zoio_logo.png">
+                            </a>
+                        </div>
+                        <div class="small-12 columns small-centered">
+                            <a href="http://grupomaquina.com">
+                                <img src="{{ STATIC_URL }}img/login/maquina_logo.png">
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="medium-6 columns text-right infos hide-for-small">
+                        <p>
+                            <a href="mailto:radarmais@grupomaquina.com" class="mailto">radarmais@grupomaquina.com</a><br>
+                            -<br>
+                            <a href="http://zoio.net.br">zoio.net.br</a><br>
+                            <a href="http://grupomaquina.com">grupomaquina.com</a>
+                        </p>
+                    </div>
+
+                    <div class="medium-6 columns text-center infos show-for-small-only">
+                        <p>
+                            <a href="mailto:radarmais@grupomaquina.com" class="mailto">radarmais@grupomaquina.com</a><br>
+                            -<br>
+                            <a href="http://zoio.net.br">zoio.net.br</a><br>
+                            <a href="http://grupomaquina.com">grupomaquina.com</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- / RODAPE -->
+        
+        
+
+        <script src="{{ STATIC_URL }}js/vendor/jquery.js"></script>
+        <script src="{{ STATIC_URL }}js/foundation.min.js"></script>
+        <script src="{{ STATIC_URL }}js/vendor/pace.min.js"></script>
+        <script src="{{ STATIC_URL }}js/loader.js"></script>
+        <script src="{{ STATIC_URL }}js/default.js"></script>
+
+        {% block scriptsrc %}{% endblock %}
+
+        <script>
+            $(document).foundation();
+
+            function footer() {
+                var footer = $(".rodape");
+                var pos = footer.position();
+                var height = $(window).height();
+                height = height - pos.top;
+                height = height - (footer.height()*2);
+                if (height > 0) {
+                    footer.css({
+                        'margin-top': (height) + 'px'
+                    });
+                }
+            }
+
+            $(document).ready(function(){
+                footer();
+            });
+            $(window).resize(function(){
+                footer();
+            });
+        </script>
+        <script>
+            $(document).foundation();
+
+            function footer() {
+                var footer = $(".rodape");
+                var pos = footer.position();
+                var height = $(window).height();
+                height = height - pos.top;
+                height = height - (footer.height()*2);
+                if (height > 0) {
+                    footer.css({
+                        'margin-top': (height) + 'px'
+                    });
+                }
+            }
+
+            $(document).ready(function(){
+                footer();
+            });
+            $(window).resize(function(){
+                footer();
+            });
+        </script>
+        {% block script %}{% endblock %}
+
+    </body>
+</html>

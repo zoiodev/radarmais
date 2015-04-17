@@ -1,0 +1,247 @@
+p.help span {
+	font-size: 0.9rem;
+}
+
+.barra-configuracao {
+	margin-top: 46px;
+	background-color: #bdbdbd;
+}
+
+.editable:focus, 
+.editableNoReturn:focus 
+{
+  outline: none;
+}
+
+.tooltip.tip-left {
+	margin-right: 100px;
+}
+
+
+.medium-editor-toolbar button:not(.medium-editor-button-active) {
+  background-color: #000;
+}
+
+.joyride-content-wrapper small {
+	font-size: 50% !important;
+	color: #D7D7D7 !important;
+}
+
+
+.link {
+	cursor: pointer;
+}
+
+.li-nowarp li label {
+	white-space: nowrap;
+}
+
+.input[type="file"], input[type="checkbox"], input[type="radio"], select {
+	margin: 0;
+}
+
+
+.configuracoes div.separador {
+	border-left: solid 1px #DDD;
+}
+
+.configuracoes div[data-equalizer-watch] {
+	padding-top: 0 !important;
+}
+
+
+ul.clientes-list li {
+	padding-bottom: 0 !important;
+}
+
+
+.no-padding-lr {
+	padding-left: 0 !important;
+	padding-right: 0 !important;
+}
+
+.no-padding-l {
+	padding-left: 0 !important;
+}
+.no-padding-r {
+	padding-right: 0 !important;
+}
+
+.seta-indicativa:after {
+	position: absolute;
+	content: "";
+	width: 0;
+	height: 0;
+	display: block;
+	border-style: solid;
+	top: 50%;
+	border-color: #333333 transparent transparent transparent;
+	border-width: 0.38889rem;
+	right: 1.16667rem;
+	margin-top: -0.13889rem;
+}
+
+.clear-left {
+	clear: left;
+}
+
+button.h2 {
+	font-family: "Gotham-Black", "Helvetica Neue", Helvetica, Roboto, Arial, sans-serif;
+	font-weight: normal;
+	font-style: normal;
+	color: #252969;
+	text-rendering: optimizeLegibility;
+	margin-top: 0.2rem;
+	margin-bottom: 0.5rem;
+	line-height: 1.4;
+	background: none;
+	font-size: 2.3125rem;
+	text-transform: uppercase;
+}
+	button.h2:hover ,
+	button.h2:focus 
+	{
+		background: none;
+		color: #252969;
+	}
+	button.h2:after {
+		border-color: #333333 transparent transparent transparent !important;
+	}
+
+.button.paddingless {
+	padding-right: 1rem;
+  	padding-left: 1rem;
+}
+
+.button.criar-novo {
+	padding-top: 1.4rem;
+	padding-bottom: 1.5rem;
+}
+
+hr.marginless {
+	margin-top: 0.1rem;
+	margin-bottom: 0.3rem;
+}
+
+
+table {
+	border: none;
+}
+table thead tr th, table thead tr td {
+	font-size: 1.1rem;
+	border-top: solid 1px #CFCFCF;
+	text-transform: uppercase;
+	padding-bottom: 20px;
+}
+table tr.odd, 
+table tr.alt, 
+table tr:nth-of-type(odd) {
+	background: #F5F5F5;
+}
+table tr.even, 
+table tr.alt, 
+table tr:nth-of-type(even) {
+	background: #FFF;
+}
+
+table tr.even td:not(:last-child), 
+table tr.alt td:not(:last-child), 
+table tr:nth-of-type(even) td:not(:last-child) {
+	border-right: solid 1px #F9F9F9;
+}
+
+table thead tr,
+table thead {
+	background: #fff !important;
+}
+
+table tbody tr:last-child td {
+	border-bottom: solid 1px #CFCFCF;
+	padding-bottom: 20px;
+}
+
+.bold {
+	  font-weight: bold;
+}
+
+.bt-acao {
+	/*width: 30px;*/
+	width: 33%;
+	min-width: 30px;
+	height: 29px;
+	background-repeat: no-repeat;
+	background-position: center bottom;
+	float: left;
+	/*margin-right: 10%;*/
+}
+	.bt-acao:hover,
+	.bt-acao.active {
+		background-position: center top;
+	}
+	.bt-acao.edit {
+		background-image: url(/static/img/admin/icon_edit.png);
+	}
+	.bt-acao.delete {
+		background-image: url(/static/img/admin/icon_delete.png);
+	}
+	.bt-acao.duplicar {
+		background-image: url(/static/img/admin/icone_duplicar.png);
+	}
+
+
+.icone-ativo {
+	/*width: 23px;*/
+	width: 100%;
+	min-width: 23px;
+	height: 22px;
+	background-repeat: no-repeat;
+	background-position: center bottom;
+	float: left;
+	background-image: url(/static/img/admin/onoff_icon.png);
+}
+	.icone-ativo.True {
+		background-position: center bottom;
+	}
+	.icone-ativo.False {
+		background-position: center top;
+	}
+
+.uppercase {
+	text-transform: uppercase;
+}
+
+p.small {
+	font-size: 74%;
+	color: #A3A3A3;
+}
+
+/* >>> config*/
+.top-header-config{margin-bottom: 70px;}
+.top-header-config .cabecalho h5{font-size: 0.98rem;}
+.top-header-config .cabecalho:after{
+	border-top: solid 1px #ECECEC;
+	content: ' ';
+	width: 100%;
+	height: 4px;
+	float: left;
+}
+.reset-password label{font-style: italic}
+.button-save-config{padding: 45px 0;}
+.footer-config{margin-bottom: 20px!important;}
+.footer-config .cabecalho:after{
+	border-top: solid 1px #ECECEC;
+	content: ' ';
+	width: 100%;
+	height: 4px;
+	float: left;
+}
+
+@media screen and (max-width: 418px) {
+	    .top-header-config .cabecalho h5{font-size: 0.9rem;}
+	}
+/* <<< config*/
+
+
+.bt-acao.duplo {
+	width: 50% !important;
+}

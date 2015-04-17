@@ -1,0 +1,102 @@
+{% extends "rmais/base-login.html" %}
+	
+	{% block title %}Login{% endblock %}
+
+	{% block scriptsrc %}
+	{% endblock %}
+
+	{% block scripts %}
+		<script type="text/javascript">
+            $(document).ready(function(){
+                $('a.log-error').trigger('click');
+            });
+	    </script>
+	{% endblock %}
+
+
+	{% block content %}
+		<div class="row login separador">
+			<div class="small-12 medium-5 large-4 columns small-centered">
+				
+				<!-- LOGO -->
+				<div class="small-12 columns text-center logo">
+					<img src="{{ STATIC_URL }}img/login/radarmais_logo.png">
+				</div>
+				<!-- /LOGO -->
+
+
+				<!-- FORM LOGIN -->
+				<div class="small-12 text-center formulario">
+					<h2>Login</h2>
+					<hr>
+
+					<form class="login" name="login" id="login"  method="post">
+						{% csrf_token %}
+						<!-- {{form.usuario}} -->
+						<div class="row collapse">
+							<!-- usuário -->
+							<div class="small-2 columns text-left">
+								<img src="{{ STATIC_URL }}img/login/usuario_icon.png">
+							</div>
+							<div class="small-10 columns">
+								<!-- <input type="text" name="usuario" id="usuario" placeholder="usuário" required> -->
+								{{form.usuario}}
+							</div>
+							<!-- / usuário -->
+
+							<!-- senha -->
+							<div class="small-2 columns text-left">
+								<img src="{{ STATIC_URL }}img/login/senha_icon.png">
+							</div>
+							<div class="small-10 columns">
+								<!-- <input type="password" name="senha" id="senha" placeholder="senha"> -->
+								{{form.senha}}
+							</div>
+							<!-- / senha -->
+							<input type="submit" name="submit" value="acessar" class="button radius expand">
+						</div>
+					</form>
+
+					<hr>
+					<a href="javascript:void(0)" class="esqueci-senha" data-reveal-id="esqueciSenha">
+						esqueci minha senha
+					</a>
+				</div>
+				<!-- / FORM LOGIN -->
+
+
+			</div>
+		</div>
+
+
+		<!-- ESQUECI MINHA SENHA -->
+			{% include 'rmais/alertas.html' %}
+		<!-- / ESQUECI MINHA SENHA -->
+
+
+		<!-- LOGIN INCORRETO -->
+		<a href="javascript: void(0);" data-reveal-id="loginIncorreto" class="hide {{request.session.logado_error}}"></a>
+		<div id="loginIncorreto" class="reveal-modal loginIncorreto" data-reveal>
+			<h2 class="logo">
+				<img src="{{ STATIC_URL }}img/home/rmais_logo.png">
+			</h2>
+			
+			<div class="row">
+				<div class="small-12 medium-10 small-centered columns">
+					<p class="lead italic">Dados Incorretos!</p>
+					<hr>
+				</div>
+			</div>
+			
+			<a class="close-reveal-modal">&#215;</a>
+		</div>
+		<!-- / LOGIN INCORRETO -->
+
+
+
+
+
+		<!-- SEPARACAO -->
+		<div class="row separador"></div>
+		<!-- / SEPARACAO -->
+	{% endblock %}

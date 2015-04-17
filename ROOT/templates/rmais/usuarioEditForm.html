@@ -1,0 +1,105 @@
+{% extends "rmais/base-admin.html" %}
+{% load widget_tweaks %}
+
+{###################################################
+### deixar o block e a url da imagem na mesma linha
+### para não gerar espaço e dar erro no link da img 
+### block top >>>
+####################################################
+##}
+{% block title %}Editar Usuário{% endblock %}
+
+{% block banner %}{{ STATIC_URL }}uploads/pagina/banner/banner_home_C3eauxI.png{% endblock %}
+
+{% block iconeSessao %}{{ STATIC_URL }}uploads/categoria/radar_icon.png{% endblock %}
+{% block categoriaSessao %}Usuários{% endblock %}
+
+{###################################################
+### <<< block top 
+####################################################
+##}
+
+
+
+{% block css %}
+	<link rel="stylesheet" href="{{ STATIC_URL }}css/admin.css" />
+{% endblock %}
+
+{% block scriptsrc %}
+	<script src="{{ STATIC_URL }}js/admin_usuario.js"></script>
+	<script src="{{ STATIC_URL }}js/loader.js"></script>
+{% endblock %}
+
+
+
+
+{% block content %}
+	<p class="left">
+		<a href="{% url 'usuarioListagem' %}" class="button secondary alert tiny radius">&larr; Cancelar e voltar para a listagem.</a>
+	</p>
+
+	
+	<!-- <div class=""> -->
+		<form method="post" class="editar-usuario" id="editUsuario">
+			{% csrf_token %}
+			<input type="hidden" value="{{ csrf_token }}" id="token">
+			<input type="hidden" value="{{usuario.id}}" id="usuario_id">
+			<div class="small-12 columns">
+				<div class="small-2 columns">
+					<label for="right-label" class="right inline">Nome</label>
+				</div>
+				<div class="small-10 columns">
+					{{ form.nome_do_usuario }}
+					<p ng-show="addUsuario.nome_do_usuario.$invalid && !addUsuario.nome_do_usuario.$pristine" class="help-block">You name is required.</p>
+				</div>
+			</div>
+			
+			<div class="small-12 columns">
+				<div class="small-2 columns">
+					<label for="right-label" class="right inline">E-mail</label>
+				</div>
+				<div class="small-10 columns">
+					{{ form.email }}
+				</div>
+			</div>
+
+			<div class="small-12 columns">
+				<div class="small-2 columns">
+					<label for="right-label" class="right inline">Nome do Cliente</label>
+				</div>
+				<div class="small-10 columns">
+					{{ form.empresa }}
+				</div>
+			</div>
+			<div class="small-6 columns">
+				<div class="small-4 columns">
+					<label for="right-label" class="right inline">Status</label>
+				</div>
+				<div class="small-8 columns">
+					{{ form.status }}
+					<!-- {{ form.status|attr:"ng-model:formData.status" }} -->
+				</div>
+			</div>
+			<div class="small-6 columns">
+				<div class="small-4 columns">
+					<label for="right-label" class="right inline">Qtde. Dias</label>
+				</div>
+				<div class="small-8 columns">
+					<!-- {{ form.dias_liberado }} -->
+					{{ form.dias_liberado }}
+				</div>
+			</div>
+
+			<input type="hidden" id="url" value="{% url 'usuarioEditPost' usuario.id %}">
+			<input type="hidden" id="url-listagem" value="{% url 'usuarioListagem'%}">
+
+			<div class="small-6 small-centered columns">
+				<div class="small-12 columns text-center">
+					<a href="javscript: void(0);" class="usuarioEdit button radius"><span>Editar Usuario</span></a>
+				</div>
+			</div>
+		</form>
+	<!-- </div> -->
+
+{% endblock %}
+

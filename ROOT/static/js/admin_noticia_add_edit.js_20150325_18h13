@@ -1,0 +1,690 @@
+
+///////  EDITOR ///////////////
+////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////
+var editor = new MediumEditor('.editable', {
+	anchorTarget: true,
+	buttons: ['bold', 'italic', 'underline', 'strikethrough', 'quote', 'anchor', 'justifyLeft', 'justifyCenter', 'justifyRight', 'justifyFull', 'superscript', 'subscript', 'orderedlist', 'unorderedlist', 'outdent', 'indent', 'header1', 'header2'],
+	buttonLabels: 'fontawesome',
+	firstHeader: 'h2',
+	secondHeader: 'h3',
+	// staticToolbar: true,
+	// stickyToolbar: false,
+	cleanPastedHTML: true
+});
+
+
+var editorNoReturn = new MediumEditor('.editableNoReturn', {
+	anchorTarget: true,
+	buttons: ['bold', 'italic', 'underline', 'strikethrough', 'quote', 'anchor', 'justifyLeft', 'justifyCenter', 'justifyRight', 'justifyFull', 'superscript', 'subscript', 'orderedlist', 'unorderedlist', 'outdent', 'indent', 'header1', 'header2'],
+	buttonLabels: 'fontawesome',
+	firstHeader: 'h2',
+	secondHeader: 'h3',
+	disableReturn: true,
+	// staticToolbar: true,
+	// stickyToolbar: false,
+	cleanPastedHTML: true,
+	disablePlaceholders: true
+});
+
+
+$(function () {
+	$('.editable').mediumInsert({
+		editor: editor,
+		addons: {
+			images: {
+				uploadScript: webroot + 'admin/upload-files/', // (string) A relative path to an upload script
+				deleteScript: webroot + 'admin/delete-files/', // (string) A relative path to a delete script
+				preview: true, // (boolean) Show an image before it is uploaded (only in browsers that support this feature)
+				captionPlaceholder: 'Escreva uma legenda para a imagem (opcional)', // (string) Caption placeholder
+				autoGrid: 3, // (integer) Min number of images that automatically form a grid
+				styles: { // (object) Available image styles configuration
+					wide: { // (object) Image style configuration. Key is used as a class name added to an image, when the style is selected (.medium-insert-images-wide)
+						label: '<span class="fa fa-align-justify"></span>', // (string) A label for a style
+						added: function ($el) {}, // (function) Callback function called after the style was selected. A parameter $el is a current active paragraph (.medium-insert-active)
+						removed: function ($el) {} // (function) Callback function called after a different style was selected and this one was removed. A parameter $el is a current active paragraph (.medium-insert-active)
+					},
+					left: {
+						label: '<span class="fa fa-align-left"></span>'
+					},
+					right: {
+						label: '<span class="fa fa-align-right"></span>'
+					},
+					grid: {
+						label: '<span class="fa fa-th"></span>'
+					}
+				},
+				actions: { // (object) Actions for an optional second toolbar
+					remove: { // (object) Remove action configuration
+						label: '<span class="fa fa-times"></span>', // (string) Label for an action
+						clicked: function ($el) { // (function) Callback function called when an action is selected
+							var $event = $.Event('keydown');
+
+							$event.which = 8;
+							$(document).trigger($event);   
+						}
+					}
+				}
+			},
+			embeds: { // (object) Embeds addon configuration
+				label: '<span class="fa fa-youtube-play"></span>', // (string) A label for an embeds addon
+				placeholder: 'Cole aqui o endereço do vídeo do YouTube e aperte o Enter', // (string) Placeholder displayed when entering URL to embed
+				captionPlaceholder: 'Type caption (optional)', // (string) Caption placeholder
+				oembedProxy: null, // (string/null) URL to oEmbed proxy endpoint, such as Iframely, Embedly or your own. You are welcome to use "http://medium.iframe.ly/api/oembed?iframe=1" for your dev and testing needs, courtesy of Iframely. *Null* will make the plugin use pre-defined set of embed rules without making server calls.
+				actions: { // (object) Actions for an optional second toolbar
+					remove: { // (object) Remove action configuration
+						label: '<span class="fa fa-times"></span>', // (string) Label for an action
+						clicked: function ($el) { // (function) Callback function called when an action is selected
+							var $event = $.Event('keydown');
+
+							$event.which = 8;
+							$(document).trigger($event);   
+						}
+					}
+				}
+			}
+		}
+	});
+});
+////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////
+
+
+$(document).ready(function(){
+	$('#tituloDaMateria').limiter('300');
+	$('#chamadaDaMateria').limit('300','');
+	$('#fonteDaMateria').limit('300','');
+
+	$('#tituloDaMateria').focus(function(){
+		if ($(this).html() == $(this).attr('data-placeholder')) {
+			$(this).html('');
+		}
+	});
+	$('#tituloDaMateria').blur(function(){
+		if ($(this).html() == '') {
+			$(this).html($(this).attr('data-placeholder'));
+		}
+	});
+
+	$('#chamadaDaMateria').focus(function(){
+		if ($(this).html() == $(this).attr('data-placeholder')) {
+			$(this).html('');
+		}
+	});
+	$('#textoDaMateria').focus(function(){
+		if ($(this).html() == $(this).attr('data-placeholder')) {
+			$(this).html('');
+		}
+	});
+
+	// $('form#formnoticia input[name="slug"]').slugify('form#formnoticia input[name="titulo"]');
+
+	//// FORMULÁRIO
+	/////////////////////////////////////////
+	$("form#formnoticia input[type=submit]").click(function() {
+		$('form#formnoticia input[name="destino"]').val($(this).attr('id'));
+		// console.log($('form#formnoticia input[name="destino"]').val());
+		// fecharAlerta();
+	});
+	$('form#formnoticia').submit(function(){
+		// console.log('submit');
+		// debugger;
+
+
+		////===> PASSANDO VALORES DOS ELEMENTOS DIV PARA O FORMULÁRIO
+		$('[data-form-input]').each(function(index, value){
+			// debugger;
+			nome_do_campo 			= $(value).attr('data-form-input');
+			place_holder_do_campo 	= $(value).attr('data-placeholder');
+			valor_do_campo			= $(value).html();
+
+			$('form#formnoticia').find('input[name="'+ nome_do_campo +'"]').val(valor_do_campo).attr('placeholder', place_holder_do_campo);
+
+		});
+
+
+
+
+
+
+		////===> VARIÁVEIS
+		var categoria 		= $(this).find('input[name="categoria"]');
+		var categoria_value	= $(categoria).val();
+
+		var data 			= $(this).find('input[name="data_da_noticia"]');
+		var data_value		= $(data).val();
+		
+		var titulo 			= $(this).find('input[name="titulo"]');
+		var titulo_value	= $(titulo).val();
+		
+		var slug 			= $(this).find('input[name="slug"]');
+		$(slug).val(slugTransform(titulo_value));
+
+		var slug_value		= $(slug).val();
+		// console.log(slug_value);
+
+		
+		var chamada 		= $(this).find('input[name="chamada"]');
+		var chamada_value	= $(chamada).val();
+		
+		var texto 			= $(this).find('input[name="texto"]');
+		var texto_value		= $(texto).val();
+
+		var fonte 			= $(this).find('input[name="fonte"]');
+		var fonte_value		= $(fonte).val();
+		
+		var clientes 		= $(this).find('input[name="cliente[]"]:checked');
+		var clientes_value	= $(clientes).serialize()
+		// console.log(clientes_value);
+		// debugger;
+
+		var data_publicacao = $(this).find('input[name="data_publicacao"]');
+		var data_publicacao_value	= $(data_publicacao).val();
+		
+		var ativo 			= $(this).find('input[name="ativo"]');
+		var ativo_value		= "0";
+		if (ativo.is(':checked')) {
+			ativo_value = "1";
+		}
+
+		var status 			= $(this).find('select[name="status"]');
+		var status_value	= $(status).find('select[name="status"] option:selected').val();
+
+		var destino 		= $(this).find('input[name="destino"]');
+		var destino_value	= $(destino).val();
+
+		var campo_pk		= $(this).find('input[name="pk"]').val();
+		var acao 			= $(this).find('input[name="acao"]').val();
+
+		
+		// console.log("categoria_value: "+ categoria_value);
+		// console.log("data: "+ $(data).val());
+		// console.log("titulo: "+ $(titulo).val());
+		// console.log("titulo_value: "+ titulo_value);
+		// console.log("chamada: "+ $(chamada).val());
+		// console.log("texto: "+ $(texto).val());
+		// console.log("fonte: "+ $(fonte).val());
+		// console.log("clientes: "+ clientes_value);
+		// console.log("data_publicacao: "+ $(data_publicacao).val());
+		// console.log("ativo: "+ ativo_value);
+		// console.log("status: "+ $(status).val());
+		// console.log("destino: "+ $(destino).val());
+		// console.log("destino_value: "+ destino_value);
+
+
+		////===> VALIDAÇÃO
+		// debugger;
+		/*
+		TITULO */
+		if (titulo_value) {
+			if (titulo_value.replace(' ', '') == '') {
+				avisarErro('Favor inserir um título');
+				return false;
+			}
+			
+			if (titulo_value.trim() == $(titulo).attr('placeholder').trim()) {
+				avisarErro('Favor inserir um título');
+				return false;
+			}
+		} else {
+			avisarErro('Favor inserir um título');
+			return false;
+		}
+
+		/*
+		CHAMADA
+		OBS.: não tem validação, apenas limpeza do campo */
+		if (chamada_value) {
+			if (chamada_value.trim() == $(chamada).attr('placeholder').trim()) {
+				$(chamada).val('');
+			}
+		}
+
+		/*
+		TEXTO */
+		if (texto_value){
+			if (texto_value.replace(' ', '') == '') {
+				avisarErro('Favor inserir um texto');
+				return false;
+			}
+
+			if (texto_value.trim() == $(texto).attr('placeholder').trim()) {
+				avisarErro('Favor inserir um texto');
+				return false;
+			}
+		} else {
+			avisarErro('Favor inserir um texto');
+			return false;
+		}
+		$('#espacoParaLimpeza').html(texto_value);
+		$('#espacoParaLimpeza .medium-insert-buttons').remove();
+		$(texto).val($('#espacoParaLimpeza').html());
+		texto_value		= $(texto).val();
+		// console.log(texto_value);
+		// debugger;
+
+
+
+		/*
+		FONTE
+		OBS.: não tem validação, apenas limpeza do campo */
+		// debugger;
+		if (fonte_value) {
+			if (fonte_value.trim() == $(fonte).attr('placeholder').trim()) {
+				$(fonte).val('');
+			}
+		}
+
+		/*
+		CLIENTES */
+		if (clientes_value) {
+			if (clientes_value == '') {
+				avisarErro('Você precisa escolher os clientes que podem visualizar esta notícia');
+				return false;
+			} else {
+				var clientes_value = new Array();
+				$.each($(clientes), function() {
+					clientes_value.push($(this).val());
+				});
+				clientes_value = clientes_value.toString();
+				$(this).find('input[name="clientearray"]').val(clientes_value);
+				// console.log(clientes_value);
+			}
+		} else {
+			avisarErro('Você precisa escolher os clientes que podem visualizar esta notícia');
+			return false;
+		}
+
+		/*
+		DATA DE PUBLICAÇÃO
+		OBS.: não tem validação, apenas limpeza do campo */
+		// debugger;
+		if (data_publicacao_value) {
+			if (data_publicacao_value == '__/__/____ __:__') {
+				$(data_publicacao).val('');
+			} else {
+				var dataPub = $(data_publicacao).val();
+
+				var dataPubXP = dataPub.split(' ');
+				var dataPubDat = dataPubXP[0];
+				var dataPubHou = dataPubXP[1];
+
+				var dateXP = dataPubDat.split('/');
+				var dia = dateXP[0];
+				var mes = dateXP[1];
+				var ano = dateXP[2];
+
+				var dataCompleta = ano+'-'+mes+'-'+dia+' '+ dataPubHou;
+
+				$(this).find('input[name="data_de_publicacao"]').val(dataCompleta)
+				// console.log(dataCompleta);
+				// debugger;
+
+			}
+		}
+
+
+		/*
+		DATA DA NOTÍCIA
+		OBS.: não tem validação, apenas limpeza do campo */
+		// debugger;
+		if (data_value) {
+			if (data_value == '') {
+				$(data).val('');
+			} else {
+				var dataPub = $(data).val();
+
+				var dataPubXP = dataPub.split(' ');
+				var dataPubDat = dataPubXP[0];
+
+				var dateXP = dataPubDat.split('.');
+				var dia = dateXP[0];
+				var mes = dateXP[1];
+				var ano = dateXP[2];
+
+				var dataCompleta = ano+'-'+mes+'-'+dia;
+
+				$(this).find('input[name="data_da_noticia"]').val(dataCompleta)
+				// console.log(dataCompleta);
+				// debugger;
+
+			}
+		}
+
+
+
+		// console.log($(this).serialize());
+
+
+		/*
+		.
+		.
+		.
+		.
+		.
+		.
+		.
+		.
+		.
+		.
+		REALIZA O AJAX PARA VERIFICAR O SLUG
+		*/
+		// debugger;
+		var localActionV = webroot+'admin/noticias/verifica-slug/';
+		var tokenDjango = $('#token').val();
+		$.ajax({
+			type: 'GET',
+			url: localActionV+ slug_value +'/',
+			dataType: 'json',
+			headers: { 'X-CSRFToken': tokenDjango},
+			// SUCESSO
+			success: function(data){
+				// console.log(data);
+				// retorno = jQuery.parseJSON(data);
+				retorno = data;
+
+				// console.log(retorno.existe);
+				// console.log(retorno.id);
+				// debugger;
+				/*
+				*
+				* => Caso o título já exista, irá retornar um erro na tela
+				*/
+				if (retorno.existe == true && retorno.id != campo_pk) {
+					avisarErro('Já existe uma notícia com este título. Por favor mude.');
+				
+				/*
+				*
+				* => Caso não exista uma notícia igual, ele pode salvar normalmente
+				*/
+				} else {
+					// debugger;
+					var localAction = webroot+'admin/noticias/add/post/';
+					if (acao == 'edit') {
+						localAction = webroot+'admin/noticias/edit/post/'+ campo_pk +'/';
+					}
+
+					$.ajax({
+						type: 'POST',
+						url: localAction,
+						data: $( "#formnoticia" ).serialize(),
+						headers: { 'X-CSRFToken': tokenDjango},
+						// SUCESSO
+						success: function(data){
+							// console.log(data);
+
+							var retornoSave = data.split('|');
+							var sucesso = retornoSave[0];
+							var noticia_id = retornoSave[1];
+
+							// console.log(noticia_id);
+							// debugger;
+
+							if (sucesso == "ok") {
+								if (acao == 'add') {
+									// $.cookie('sucesso', 'True');
+								}
+
+
+								///=> REDIRECIONA
+								var destino_url = "";
+
+								if (destino_value == 1) {
+									destino_url = webroot+"admin/noticias/listagem/";
+								}
+								if (destino_value == 2) {
+									destino_url = webroot+"admin/noticias/add/";
+								}
+								if (destino_value == 3) {
+									if (acao == 'add') {
+										destino_url = webroot+"admin/noticias/edit/"+ noticia_id +"/";
+
+									} else {
+										avisarSucesso('Sua notícia foi editada com sucesso!');
+
+									}
+								}
+
+
+
+								if (destino_url != "") {
+									window.location = destino_url; 
+								}
+							} else {
+								avisarErro(data);
+								return false;
+							}
+
+
+							
+						},
+						// ERRO
+						error: function (data) {
+							// Se deu algum erro, mostro no log do console
+							console.log(data.responseText);
+						}
+					});
+				}
+				
+			},
+			// ERRO
+			error: function (data) {
+				// Se deu algum erro, mostro no log do console
+				console.log(data.responseText);
+			}
+		});
+		/*
+		.............................................
+		*/
+
+
+
+
+
+
+	});
+	/////////////////////////////////////////
+
+
+
+	//// HELP
+	/////////////////////////////////////////
+	$('#infoForm').click(function(){
+		$(document).foundation('joyride', 'start');
+	});
+	/////////////////////////////////////////
+
+
+
+
+	
+
+	
+	//// CHECK BOX DOS CLIENTES
+	/////////////////////////////////////////
+
+	$('#todos').change(function(){
+		if ($(this).is(":checked")) {
+			$('.clientes-list input[type="checkbox"]').prop('checked', true);
+
+		} else {
+			$('.clientes-list input[type="checkbox"]').prop('checked', false);
+		}
+	});
+
+	$('.clientes-list input[type="checkbox"]').change(function(){
+		if (!$(this).is(":checked")) {
+			if ($("#todos").prop('checked', true)) {
+				$("#todos").prop('checked', false);
+			}
+		}
+	});
+	/////////////////////////////////////////
+
+
+
+
+
+
+
+	//// CALENDÁRIO PERSONALIZADO
+	/////////////////////////////////////////
+	$('.datetimepicker').datetimepicker({
+		lang:'pt-BR',
+		i18n:{
+			de:{
+				months:[
+					'Janeiro','Fevereiro','Março','Abril',
+					'Maio','Junho','Julho','Agosto',
+					'Setembro','Outubro','Novembro','Dezembro',
+				],
+				dayOfWeek:[
+					"Dom", "Seg", "Ter", "Qua", 
+					"Qui", "Sex", "Sab",
+				]
+			}
+		},
+		timepicker:true,
+		format:'d/m/Y H:i',
+		mask:true,
+		closeOnDateSelect: true
+	});
+
+	$('.datetimepickerNoTime').datetimepicker({
+		lang:'pt-BR',
+		i18n:{
+			de:{
+				months:[
+					'Janeiro','Fevereiro','Março','Abril',
+					'Maio','Junho','Julho','Agosto',
+					'Setembro','Outubro','Novembro','Dezembro',
+				],
+				dayOfWeek:[
+					"Dom", "Seg", "Ter", "Qua", 
+					"Qui", "Sex", "Sab",
+				]
+			}
+		},
+		onSelectDate:function(ct,$i){
+			$('.datetimepickerNoTime').html(ct.dateFormat('d.m.Y'))
+		},
+		timepicker:false,
+		format:'d.m.Y',
+		mask:true,
+		closeOnDateSelect: true
+	});
+	/////////////////////////////////////////
+});
+
+
+
+/// FUNCÕES DE APOIO PARA A VALIDAÇÃO
+/////////////////////////////////////////
+function avisarErro(frase) {
+	
+	if ($('div[data-alert]').length) {
+		$('div[data-alert]').slideUp('fast');
+		setTimeout(function(){ 
+			$('div[data-alert]').remove();
+
+			var html = '<div data-alert class="alert-box alert round" style="display:none;">'+ frase +'<a href="javascript:void(0)" onClick="fecharAlerta();" class="close">&times;</a></div>';
+
+			$('#acoesParaSalvar').before(html);
+			$('div[data-alert]').slideDown();
+		}, 300);
+		
+
+
+	} else {
+		var html = '<div data-alert class="alert-box alert round" style="display:none;">'+ frase +'<a href="javascript:void(0)" onClick="fecharAlerta();" class="close">&times;</a></div>';
+
+		$('#acoesParaSalvar').before(html);
+		$('div[data-alert]').slideDown();
+
+	}
+	
+}
+function avisarSucesso(frase) {
+	
+	if ($('div[data-alert]').length) {
+		$('div[data-alert]').slideUp('fast');
+		setTimeout(function(){ 
+			$('div[data-alert]').remove();
+
+			var html = '<div data-alert class="alert-box success round" style="display:none;">'+ frase +'<a href="javascript:void(0)" onClick="fecharAlerta();" class="close">&times;</a></div>';
+
+			$('#acoesParaSalvar').before(html);
+			$('div[data-alert]').slideDown();
+		}, 300);
+		
+
+
+	} else {
+		var html = '<div data-alert class="alert-box success round" style="display:none;">'+ frase +'<a href="javascript:void(0)" onClick="fecharAlerta();" class="close">&times;</a></div>';
+
+		$('#acoesParaSalvar').before(html);
+		$('div[data-alert]').slideDown();
+
+	}
+
+	setTimeout(function(){
+		fecharAlerta();
+	}, 10000);
+	
+}
+
+function fecharAlerta() {
+	$('div[data-alert]').slideUp();
+	setTimeout(function(){ 
+		$('div[data-alert]').remove();
+	}, 1000);
+}
+function zerarCampo(element) {
+	// $(element).val('');
+	// $(element).reset();
+}
+/////////////////////////////////////////
+
+
+function slugTransform(str) {
+	str = str.replace(/^\s+|\s+$/g, ''); // trim
+	str = str.toLowerCase();
+
+	// remove accents, swap ñ for n, etc
+	var from = "ãàáäâẽèéëêìíïîõòóöôùúüûñç·/_,:;";
+	var to   = "aaaaaeeeeeiiiiooooouuuunc------";
+	for (var i=0, l=from.length ; i<l ; i++) {
+	str = str.replace(new RegExp(from.charAt(i), 'g'), to.charAt(i));
+	}
+
+	str = str.replace(/[^a-z0-9 -]/g, '') // remove invalid chars
+	.replace(/\s+/g, '-') // collapse whitespace and replace by -
+	.replace(/-+/g, '-'); // collapse dashes
+
+	return str;
+};
+
+
+
+(function($) {
+	$.fn.extend( {
+		limiter: function(limit, elem) {
+			$(this).on("keyup focus", function() {
+				setCount(this, elem);
+			});
+			function setCount(src, elem) {
+				var chars = $(src).html().length;
+				if (chars >= limit) {
+					$(src).html($(src).html().substr(0, limit));
+					chars = limit;
+				}
+				if (elem) {
+					$(elem).html( limit - chars );
+				}
+			}
+			if (elem) {
+				setCount($(this)[0], elem);
+			}
+		}
+	});
+})(jQuery);

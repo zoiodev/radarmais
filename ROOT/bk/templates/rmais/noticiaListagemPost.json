@@ -1,0 +1,15 @@
+{
+	"noticias":[
+			{% for noticia in resultBusca %}
+				{
+					"id": "{{noticia.id}}",
+					"titulo": "{{noticia.titulo|removetags:'p b span strong br'|safe}}",
+					"categoria": "{{noticia.categoria}}",
+					"data_de_publicacao": "{{noticia.data_de_publicacao}}",
+					"ativo": "{{noticia.ativo}}",
+					"url": "{{urlEdit}}{{noticia.id}}"
+				}{% if not forloop.last %},{% endif %}
+			{% endfor %}
+			
+	]
+}
